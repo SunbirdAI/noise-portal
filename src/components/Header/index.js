@@ -1,5 +1,5 @@
 import logo from '../../logo.svg';
-import './header.css';
+import {Wrapper, LogoImg, Nav, NavList, ListItem} from "./Header.styles";
 
 export default function Header() {
     const navItems = [
@@ -21,29 +21,25 @@ export default function Header() {
             link: '#'
         }
     ];
-    return (
-        <header id="header" className="alt">
-            <img src={logo} alt="Sunbird Logo"/>
-            <nav id="nav">
-                <NavList items={navItems}/>
-            </nav>
-        </header>
+    const navListItems = navItems.map((item, index) =>
+        <NavListItem {...item} key={index}/>
     );
-}
-
-function NavList({items}) {
-    const navListItems = items.map((item, index) => <NavListItem {...item} key={index}/>);
     return (
-        <ul>
-            {navListItems}
-        </ul>
+        <Wrapper>
+            <LogoImg src={logo} alt='Sunbird Logo'/>
+            <Nav>
+                <NavList>
+                    {navListItems}
+                </NavList>
+            </Nav>
+        </Wrapper>
     );
 }
 
 function NavListItem({name, link, active}) {
     return (
-        <li className={active ? 'active' : ''}>
+        <ListItem active={active}>
             <a href={link}>{name}</a>
-        </li>
+        </ListItem>
     );
 }
