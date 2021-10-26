@@ -6,6 +6,8 @@ export const GlobalStyle = createGlobalStyle`
     --white: #fff;
     --lightOrange: #ffaa28;
     --darkOrange: #dc7828;
+    --bodyBackground: #f5f5f5;
+    --borderColor: #e5e5e5;
     --fontHeader: 20px
   }
   
@@ -18,6 +20,7 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    background: var(--bodyBackground);
   }
   
   code {
