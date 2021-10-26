@@ -6,13 +6,12 @@ export const Wrapper = styled.header`
   cursor: default;
   height: 4em;
   left: 0;
-  line-height: 3.25em;
+  line-height: 4em;
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 10000;
 `;
-
 
 export const LogoImg = styled.img`
   height: 70%;
