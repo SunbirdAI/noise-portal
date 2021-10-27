@@ -1,24 +1,29 @@
 import logo from '../../logo.svg';
 import {Wrapper, LogoImg, Nav, NavList, ListItem} from "./Header.styles";
+import {Link, useLocation} from "react-router-dom";
 
 export default function Header() {
+    const location = useLocation();
     const navItems = [
         {
             name: 'Home',
-            link: '#',
-            active: true
+            link: '/',
+            active: location.pathname === '/'
         },
         {
             name: 'Sensors',
-            link: '#'
+            link: '/sensors',
+            active: location.pathname === '/sensors'
         },
         {
             name: 'Data',
-            link: '#',
+            link: '/data',
+            active: location.pathname === '/data'
         },
         {
             name: 'Maps',
-            link: '#'
+            link: '/maps',
+            active: location.pathname === '/maps'
         }
     ];
     const navListItems = navItems.map((item, index) =>
@@ -26,7 +31,9 @@ export default function Header() {
     );
     return (
         <Wrapper>
-            <LogoImg src={logo} alt='Sunbird Logo'/>
+            <Link to='/'>
+                <LogoImg src={logo} alt='Sunbird Logo'/>
+            </Link>
             <Nav>
                 <NavList>
                     {navListItems}
@@ -39,7 +46,9 @@ export default function Header() {
 function NavListItem({name, link, active}) {
     return (
         <ListItem active={active}>
-            <a href={link}>{name}</a>
+            <Link to={link}>
+                {name}
+            </Link>
         </ListItem>
     );
 }
