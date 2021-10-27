@@ -11,6 +11,7 @@ export const Wrapper = styled.header`
   top: 0;
   width: 100%;
   z-index: 10000;
+  padding: 0 20px;
 `;
 
 export const LogoImg = styled.img`
