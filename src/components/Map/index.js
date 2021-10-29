@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 
 // Data
-import {initialDataPoints} from "../../utils";
+import {initialDataPoints, options} from "../../utils";
 
 // Leaflet
 import {Marker, Popup, TileLayer} from "react-leaflet";
@@ -12,6 +12,7 @@ import L from 'leaflet';
 import {Container, MyMap} from "./Map.styles";
 import 'leaflet/dist/leaflet.css';
 import 'react-leaflet-markercluster/dist/styles.min.css';
+import CategorySelect from "../CategorySelect";
 
 L.Icon.Default.imagePath = 'leafletimages/';
 
@@ -26,20 +27,20 @@ const defaultPosition = [0.347596, 32.582520]; // Map will be centred at Kampala
 const Map = () => {
     const [state, setState] = useState(initialState);
 
-    // const updateState = (selectedList) => {
-    //     if (selectedList.length !== 0) {
-    //         const selectedItemsSet = new Set(selectedList.map((item) => item.categoryName));
-    //         setState({
-    //                 selectedItems: selectedList,
-    //                 noiseDataPoints: initialState.noiseDataPoints.filter((dataPoint) =>
-    //                     selectedItemsSet.has(dataPoint.category))
-    //             }
-    //         );
-    //     } else setState({
-    //         selectedItems: [],
-    //         noiseDataPoints: initialState.noiseDataPoints
-    //     });
-    // };
+    const updateState = (selectedList) => {
+        if (selectedList.length !== 0) {
+            const selectedItemsSet = new Set(selectedList.map((item) => item.categoryName));
+            setState({
+                    selectedItems: selectedList,
+                    noiseDataPoints: initialState.noiseDataPoints.filter((dataPoint) =>
+                        selectedItemsSet.has(dataPoint.category))
+                }
+            );
+        } else setState({
+            selectedItems: [],
+            noiseDataPoints: initialState.noiseDataPoints
+        });
+    };
 
     const markers = state.noiseDataPoints.map((dataPoint, index) =>
         <Marker key={index} position={dataPoint.coordinates}>
@@ -54,8 +55,6 @@ const Map = () => {
             </Popup>
         </Marker>
     );
-
-    console.log(markers.length);
 
     return (
         <Container>
@@ -73,6 +72,10 @@ const Map = () => {
                     {markers}
                 </MarkerClusterGroup>
             </MyMap>
+            <CategorySelect
+                options={options}
+                updateSelected={updateState}
+            />
         </Container>
     );
 };
