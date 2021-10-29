@@ -5,6 +5,7 @@ export const Wrapper = styled.section`
   margin: 4em auto 0;
   max-width: calc(100% - 5em);
   width: 60em;
+  height: 12em;
   text-align: center;
 
   @media screen and (max-width: 840px) {
