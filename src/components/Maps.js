@@ -1,5 +1,10 @@
 import React from "react";
+import MapIntro from "./MapIntro";
 
-const Maps = () => <div>Maps</div>;
+const Maps = () => (
+    <>
+        <MapIntro/>
+    </>
+);
 
 export default Maps;
