@@ -4,7 +4,7 @@ import {NoiseRangeContainer} from './NoiseRange.styles';
 
 const STEP = 1;
 const MIN = 0;
-const MAX = 100;
+const MAX = 200;
 
 const NoiseRange = ({updateSelected}) => {
     const [values, setValues] = React.useState([50, 70]);
