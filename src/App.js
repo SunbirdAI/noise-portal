@@ -13,11 +13,11 @@ const App = () => (
     <Router>
         <Header/>
         <Routes>
-            <Route path='/' element={<Home/>}/>
-            <Route path='/sensors' element={<Sensors/>}/>
-            <Route path='/data' element={<DataPage/>}/>
-            <Route path='/maps' element={<Maps/>}/>
-            <Route path='/*' element={<NotFound/>}/>
+            <Route path='/noise-portal' element={<Home/>}/>
+            <Route path='/noise-portal/sensors' element={<Sensors/>}/>
+            <Route path='/noise-portal/data' element={<DataPage/>}/>
+            <Route path='/noise-portal/maps' element={<Maps/>}/>
+            <Route path='/noise-portal/*' element={<NotFound/>}/>
         </Routes>
         <GlobalStyle/>
     </Router>
