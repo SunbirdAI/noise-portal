@@ -14,12 +14,14 @@ export const Container = styled.div`
   }
 
   .leaflet-container {
-    height: 600px;
-    width: 100%;
+    height: 700px;
+    width: 96%;
   }
 `;
 
 export const MyMap = styled(MapContainer)`
-  float: left;
+  //float: left;
   border-radius: 2%;
+  margin-left: 2em;
+  margin-bottom: 2em;
 `;
