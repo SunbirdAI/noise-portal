@@ -6,7 +6,7 @@ export const Container = styled.div`
   //font-size: 24px;
   //font-weight: bold;
   margin: 10px;
-  display: flex;
+  display: block;
 
   p {
     font-size: 16px;
@@ -15,7 +15,7 @@ export const Container = styled.div`
 
   .leaflet-container {
     height: 600px;
-    width: 75%;
+    width: 100%;
   }
 `;
 

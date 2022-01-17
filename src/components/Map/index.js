@@ -13,13 +13,15 @@ import {Container, MyMap} from "./Map.styles";
 import 'leaflet/dist/leaflet.css';
 import 'react-leaflet-markercluster/dist/styles.min.css';
 import CategorySelect from "../CategorySelect";
+import NoiseRange from "../NoiseRange";
 
 L.Icon.Default.imagePath = 'leafletimages/';
 
 
 const initialState = {
     selectedItems: [],
-    noiseDataPoints: initialDataPoints
+    noiseDataPoints: initialDataPoints,
+    values: [50]
 };
 
 const defaultPosition = [0.347596, 32.582520]; // Map will be centred at Kampala
@@ -27,7 +29,7 @@ const defaultPosition = [0.347596, 32.582520]; // Map will be centred at Kampala
 const Map = () => {
     const [state, setState] = useState(initialState);
 
-    const updateState = (selectedList) => {
+    const updateStateByCategory = (selectedList) => {
         if (selectedList.length !== 0) {
             const selectedItemsSet = new Set(selectedList.map((item) => item.categoryName));
             setState({
@@ -41,6 +43,15 @@ const Map = () => {
             noiseDataPoints: initialState.noiseDataPoints
         });
     };
+
+    const updateStateByNoiseMeasure = (noiseRange) => {
+        const lower = noiseRange[0];
+        const upper = noiseRange[1];
+        setState({
+            noiseDataPoints: initialState.noiseDataPoints.filter((dataPoint) =>
+                dataPoint.measurement >= lower && dataPoint.measurement <= upper)
+        });
+    }
 
     const markers = state.noiseDataPoints.map((dataPoint, index) =>
         <Marker key={index} position={dataPoint.coordinates}>
@@ -58,6 +69,13 @@ const Map = () => {
 
     return (
         <Container>
+            <CategorySelect
+                options={options}
+                updateSelected={updateStateByCategory}
+            />
+            <NoiseRange
+                updateSelected={updateStateByNoiseMeasure}
+            />
             <MyMap
                 preferCanvas={true}
                 center={defaultPosition}
@@ -72,10 +90,6 @@ const Map = () => {
                     {markers}
                 </MarkerClusterGroup>
             </MyMap>
-            <CategorySelect
-                options={options}
-                updateSelected={updateState}
-            />
         </Container>
     );
 };
