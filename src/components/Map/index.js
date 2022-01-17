@@ -48,6 +48,7 @@ const Map = () => {
         const lower = noiseRange[0];
         const upper = noiseRange[1];
         setState({
+            ...state,
             noiseDataPoints: initialState.noiseDataPoints.filter((dataPoint) =>
                 dataPoint.measurement >= lower && dataPoint.measurement <= upper)
         });
