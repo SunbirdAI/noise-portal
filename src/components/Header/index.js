@@ -7,23 +7,23 @@ export default function Header() {
     const navItems = [
         {
             name: 'Home',
-            link: '/noise-portal',
-            active: location.pathname === '/noise-portal'
+            link: '/',
+            active: location.pathname === '/'
         },
         {
             name: 'Sensors',
-            link: '/noise-portal/sensors',
-            active: location.pathname === '/noise-portal/sensors'
+            link: '/sensors',
+            active: location.pathname === '/sensors'
         },
         {
             name: 'Data',
-            link: '/noise-portal/data',
-            active: location.pathname === '/noise-portal/data'
+            link: '/data',
+            active: location.pathname === '/data'
         },
         {
             name: 'Maps',
-            link: '/noise-portal/maps',
-            active: location.pathname === '/noise-portal/maps'
+            link: '/maps',
+            active: location.pathname === '/maps'
         }
     ];
     const navListItems = navItems.map((item, index) =>

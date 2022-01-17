@@ -1,6 +1,6 @@
 // Styles
 import {GlobalStyle} from "./GlobalStyles";
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import {HashRouter as Router, Routes, Route} from "react-router-dom";
 
 import Header from "./components/Header";
 import Home from "./components/Home";
@@ -13,11 +13,11 @@ const App = () => (
     <Router>
         <Header/>
         <Routes>
-            <Route path='/noise-portal' element={<Home/>}/>
-            <Route path='/noise-portal/sensors' element={<Sensors/>}/>
-            <Route path='/noise-portal/data' element={<DataPage/>}/>
-            <Route path='/noise-portal/maps' element={<Maps/>}/>
-            <Route path='/noise-portal/*' element={<NotFound/>}/>
+            <Route path='/' element={<Home/>}/>
+            <Route path='/sensors' element={<Sensors/>}/>
+            <Route path='/data' element={<DataPage/>}/>
+            <Route path='/maps' element={<Maps/>}/>
+            <Route path='/*' element={<NotFound/>}/>
         </Routes>
         <GlobalStyle/>
     </Router>
