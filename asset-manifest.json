@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.js": "/noise-portal/static/js/main.42df674d.chunk.js",
-    "main.js.map": "/noise-portal/static/js/main.42df674d.chunk.js.map",
+    "main.js": "/noise-portal/static/js/main.b744027a.chunk.js",
+    "main.js.map": "/noise-portal/static/js/main.b744027a.chunk.js.map",
     "runtime-main.js": "/noise-portal/static/js/runtime-main.c990e49f.js",
     "runtime-main.js.map": "/noise-portal/static/js/runtime-main.c990e49f.js.map",
     "static/css/2.b3ad4daa.chunk.css": "/noise-portal/static/css/2.b3ad4daa.chunk.css",
-    "static/js/2.4c8aa218.chunk.js": "/noise-portal/static/js/2.4c8aa218.chunk.js",
-    "static/js/2.4c8aa218.chunk.js.map": "/noise-portal/static/js/2.4c8aa218.chunk.js.map",
+    "static/js/2.b671fda6.chunk.js": "/noise-portal/static/js/2.b671fda6.chunk.js",
+    "static/js/2.b671fda6.chunk.js.map": "/noise-portal/static/js/2.b671fda6.chunk.js.map",
     "static/js/3.ac7ca8f4.chunk.js": "/noise-portal/static/js/3.ac7ca8f4.chunk.js",
     "static/js/3.ac7ca8f4.chunk.js.map": "/noise-portal/static/js/3.ac7ca8f4.chunk.js.map",
     "index.html": "/noise-portal/index.html",
     "static/css/2.b3ad4daa.chunk.css.map": "/noise-portal/static/css/2.b3ad4daa.chunk.css.map",
-    "static/js/2.4c8aa218.chunk.js.LICENSE.txt": "/noise-portal/static/js/2.4c8aa218.chunk.js.LICENSE.txt",
+    "static/js/2.b671fda6.chunk.js.LICENSE.txt": "/noise-portal/static/js/2.b671fda6.chunk.js.LICENSE.txt",
     "static/media/banner.513a51fd.png": "/noise-portal/static/media/banner.513a51fd.png",
     "static/media/logo.69e64f3f.svg": "/noise-portal/static/media/logo.69e64f3f.svg",
     "static/media/overlay.f73196bc.png": "/noise-portal/static/media/overlay.f73196bc.png"
@@ -19,7 +19,7 @@
   "entrypoints": [
     "static/js/runtime-main.c990e49f.js",
     "static/css/2.b3ad4daa.chunk.css",
-    "static/js/2.4c8aa218.chunk.js",
-    "static/js/main.42df674d.chunk.js"
+    "static/js/2.b671fda6.chunk.js",
+    "static/js/main.b744027a.chunk.js"
   ]
 }
