@@ -11,7 +11,7 @@ const options = [
 const LocationFilter = () => (
     <FilterContainer>
         <Select
-            className="my-8 w-3/4 z-50"
+            className="my-8 w-3/4 z-30"
             options={options}
             placeholder="Select a location"
         />

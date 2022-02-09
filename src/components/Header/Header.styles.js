@@ -8,6 +8,9 @@ export const Nav = styled.nav`
         flex-wrap
         bg-sunbird-navy-blue
         p-6
+        sticky
+        top-0
+        z-50
     `}
 `;
 
