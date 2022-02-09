@@ -2,7 +2,7 @@
   "name": "noise-portal",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://noise.sunbird.ai",
+  "homepage": "https://sunbirdai.github.io/noise-portal/",
   "dependencies": {
     "@emotion/core": "^11.0.0",
     "@emotion/react": "^11.7.1",
