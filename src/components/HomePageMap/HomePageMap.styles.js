@@ -5,10 +5,13 @@ export const MyMapContainer = styled.div`
     shadow-lg
     bg-gray-300
     text-center
-    col-span-2
+    md:col-span-2
     z-0
+    h-[250px]
+    md:h-[400px]
+    lg:h-[550px]
   `}
   .leaflet-container {
-    height: 500px;
+    height: 100%;
   }
 `;
