@@ -28,4 +28,7 @@ export const noiseColors = [
     tw`bg-noise-magenta`,
     tw`bg-noise-purple`,
     tw`bg-noise-dark-purple`
-]
+];
+
+export const redText = tw`text-red-300`;
+export const blackText = tw`text-gray-900`;

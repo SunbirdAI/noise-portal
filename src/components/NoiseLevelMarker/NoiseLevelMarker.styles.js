@@ -1,8 +1,9 @@
-import {noiseColors} from "../../GlobalStyles";
+import {blackText, noiseColors, redText} from "../../GlobalStyles";
 import tw, {styled} from "twin.macro";
 
 export const NoiseLevelMarkerContainer = styled.div`
   ${props => noiseColors[props.color_id]}
+  ${props => props.color_id >= 8 ? redText : blackText}
   ${tw`
     shadow-lg
     text-base
