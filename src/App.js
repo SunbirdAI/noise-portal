@@ -3,6 +3,7 @@ import {GlobalStyle} from "./GlobalStyles";
 import {HashRouter as Router, Routes, Route} from "react-router-dom";
 
 import Header from "./components/Header";
+import './App.css';
 import Home from "./components/Home";
 import Sensors from "./components/Sensors";
 import DataPage from "./components/DataPage";
@@ -19,7 +20,7 @@ const App = () => (
             <Route path='/maps' element={<Maps/>}/>
             <Route path='/*' element={<NotFound/>}/>
         </Routes>
-        <GlobalStyle/>
+        {/*<GlobalStyle/>*/}
     </Router>
 );
 
