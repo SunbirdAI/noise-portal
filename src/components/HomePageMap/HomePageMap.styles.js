@@ -14,4 +14,9 @@ export const MyMapContainer = styled.div`
   .leaflet-container {
     height: 100%;
   }
+  
+  .leaflet-div-icon {
+    border: none;
+    background: none;
+  }
 `;

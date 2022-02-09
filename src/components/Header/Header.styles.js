@@ -6,7 +6,7 @@ export const Nav = styled.nav`
         items-center
         justify-between
         flex-wrap
-        bg-navy-blue
+        bg-sunbird-navy-blue
         p-6
     `}
 `;
@@ -38,7 +38,7 @@ export const Links = styled.div`
 
 export const NavItem = styled.span`
     ${tw`
-        hover:text-light-orange
+        hover:text-sunbird-light-orange
     `}
 `;
 

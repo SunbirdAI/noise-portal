@@ -45,3 +45,15 @@ export const initialDataPoints = noiseData.map((dataPoint) => (
         location_accuracy: dataPoint['Noise-Location-Accuracy']
     }
 ));
+
+const randomPlaceNames = ["Kampala", "Wandegeya", "Kampala", "Entebbe", "Uganda", "Kamwokya", "Bukoto", "Najjera"];
+const randomIndices = [0, 20, 74, 56, 103, 567, 1008, 654, 102, 554, 342, 789, 2003, 5006];
+
+export const sampleLocations = randomIndices.map((idx) => noiseData[idx]).map((dataPoint, index) => (
+    {
+        id: dataPoint['KEY'],
+        coordinates: [dataPoint.lat, dataPoint.lng],
+        name: randomPlaceNames[index % randomPlaceNames.length],
+        noise_level: index % 5 === 0 ? '80': dataPoint['Noise-Noise_Measurement']
+    }
+));
