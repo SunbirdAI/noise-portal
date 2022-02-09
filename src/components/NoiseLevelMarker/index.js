@@ -9,8 +9,8 @@ const thresholds = [35, 40, 45, 50, 55, 60, 65, 70, 75, 80];
 
 
 const getImage = (noise_level) => {
-    if (noise_level < 50) return (<MdVolumeMute/>)
-    if (noise_level < 65) return (<MdVolumeDown/>)
+    if (noise_level < 55) return (<MdVolumeMute/>)
+    if (noise_level < 70) return (<MdVolumeDown/>)
     return (<MdVolumeUp/>)
 };
 

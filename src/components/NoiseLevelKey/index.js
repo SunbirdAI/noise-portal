@@ -17,7 +17,7 @@ const noiseRanges = [...Array(11).keys()].map((color_id) => {
     }
 }).map((range, index) => (
     <ColorDiv key={index} color_id={range.color_id}>
-        <RangeText>{range.rangeText}</RangeText>
+        <RangeText color_id={range.color_id}>{range.rangeText}</RangeText>
     </ColorDiv>
 ));
 
