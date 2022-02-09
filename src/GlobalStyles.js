@@ -3,9 +3,15 @@ import tw, {styled} from "twin.macro";
 export const Wrapper = styled.div`
   ${tw`
     grid
-    grid-cols-2
-    gap-4
-    mx-20
-    my-10
+    grid-cols-1
+    md:grid-cols-2
+    gap-2
+    md:gap-4
+    mx-5
+    my-3
+    md:mx-16
+    md:my-5
+    lg:mx-20
+    lg:my-10
   `}
 `;
