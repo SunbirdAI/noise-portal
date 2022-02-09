@@ -5,7 +5,7 @@ import {divIcon} from "leaflet/dist/leaflet-src.esm";
 import {Marker, Popup} from "react-leaflet";
 
 
-const thresholds = [35, 40, 45, 50, 55, 60, 70, 75, 80];
+const thresholds = [35, 40, 45, 50, 55, 60, 65, 70, 75, 80];
 
 
 const getImage = (noise_level) => {
@@ -18,7 +18,7 @@ const getColorId = (noise_level) => {
     for (let i = 0; i < thresholds.length; i++) {
         if(noise_level < thresholds[i]) return i;
     }
-    return 9;
+    return 10;
 };
 
 const getCustomIcon = (noise_level) => {

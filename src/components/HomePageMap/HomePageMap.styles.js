@@ -7,9 +7,9 @@ export const MyMapContainer = styled.div`
     text-center
     md:col-span-2
     z-0
-    h-[250px]
-    md:h-[400px]
-    lg:h-[550px]
+    h-[400px]
+    md:h-[600px]
+    lg:h-[700px]
   `}
   .leaflet-container {
     height: 100%;
