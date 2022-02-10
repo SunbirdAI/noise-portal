@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/noise-portal/static/css/main.9fd6234e.css",
-    "main.js": "/noise-portal/static/js/main.5bdb11e4.js",
-    "static/js/787.687ea956.chunk.js": "/noise-portal/static/js/787.687ea956.chunk.js",
-    "index.html": "/noise-portal/index.html",
-    "main.9fd6234e.css.map": "/noise-portal/static/css/main.9fd6234e.css.map",
-    "main.5bdb11e4.js.map": "/noise-portal/static/js/main.5bdb11e4.js.map",
-    "787.687ea956.chunk.js.map": "/noise-portal/static/js/787.687ea956.chunk.js.map"
+    "main.css": "/static/css/main.9fd6234e.css",
+    "main.js": "/static/js/main.41f9e919.js",
+    "static/js/787.687ea956.chunk.js": "/static/js/787.687ea956.chunk.js",
+    "index.html": "/index.html",
+    "main.9fd6234e.css.map": "/static/css/main.9fd6234e.css.map",
+    "main.41f9e919.js.map": "/static/js/main.41f9e919.js.map",
+    "787.687ea956.chunk.js.map": "/static/js/787.687ea956.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.9fd6234e.css",
-    "static/js/main.5bdb11e4.js"
+    "static/js/main.41f9e919.js"
   ]
 }
