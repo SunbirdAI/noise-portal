@@ -8,6 +8,7 @@ import {
 import {MdVolumeUp, MdVolumeDown, MdVolumeMute} from "react-icons/md";
 import {divIcon} from "leaflet/dist/leaflet-src.esm";
 import {Marker, Popup} from "react-leaflet";
+import {Link} from "react-router-dom";
 
 
 const thresholds = [35, 40, 45, 50, 55, 60, 65, 70, 75, 80];
@@ -19,7 +20,7 @@ const getImage = (noise_level) => {
     return (<MdVolumeUp/>)
 };
 
-const getColorId = (noise_level) => {
+export const getColorId = (noise_level) => {
     for (let i = 0; i < thresholds.length; i++) {
         if (noise_level < thresholds[i]) return i;
     }
@@ -56,7 +57,7 @@ const MapPopup = ({location}) => (
                 <h2>{`${location.noise_level}dB`}</h2>
                 <h2>Moderate</h2>
             </NoiseLevelDescription>
-            <ViewLocationButton>
+            <ViewLocationButton to={`/location/${location.id}`} state={{location: location}}>
                 View Location
             </ViewLocationButton>
         </PopUpContainer>
