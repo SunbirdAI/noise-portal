@@ -16,6 +16,26 @@ export const Wrapper = styled.div`
   `}
 `;
 
+export const AnalysisWrapper = styled.div`
+  ${tw`
+    grid
+    grid-cols-1
+    md:grid-cols-3
+    gap-2
+    md:gap-4
+    mx-5
+    my-3
+    md:mx-16
+    md:my-5
+    lg:mx-20
+    lg:my-10
+  `}
+`;
+
+// export const AnalysisWrapper = styled.div`
+//     ${}
+// `;
+
 export const noiseColors = [
     tw`bg-noise-dark-blue-green`,
     tw`bg-noise-blue-green`,

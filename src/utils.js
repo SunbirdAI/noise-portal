@@ -46,7 +46,7 @@ export const initialDataPoints = noiseData.map((dataPoint) => (
     }
 ));
 
-const randomPlaceNames = ["Kampala", "Wandegeya", "Kampala", "Entebbe", "Uganda", "Kamwokya", "Bukoto", "Najjera"];
+const randomPlaceNames = ["Mpererwe", "Wandegeya", "Lugogo", "Entebbe", "Kololo", "Kamwokya", "Bukoto", "Najjera"];
 const randomIndices = [1815, 812, 1350, 596, 2266, 714, 4592, 2480, 2098, 1194, 4990, 140, 1235, 2595, 2505, 128, 2528, 3093, 2796, 3204];
 
 export const sampleLocations = randomIndices.map((idx) => noiseData[idx]).map((dataPoint, index) => (

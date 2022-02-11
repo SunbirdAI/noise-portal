@@ -1,5 +1,6 @@
 import {blackText, noiseColors, redText} from "../../GlobalStyles";
 import tw, {styled} from "twin.macro";
+import {Link} from "react-router-dom";
 
 export const NoiseLevelMarkerContainer = styled.div`
   ${props => noiseColors[props.color_id]}
@@ -56,14 +57,18 @@ export const NoiseLevelDescription = styled.div`
     `}
 `;
 
-export const ViewLocationButton = styled.button`
+export const ViewLocationButton = styled(Link)`
   ${tw`
     shadow
     bg-sunbird-light-orange
     ring-1
     ring-sunbird-dark-orange
     rounded-2xl
+    flex
+    items-center
+    justify-center
     text-opacity-90
+    text-gray-900
     hover:bg-sunbird-dark-orange
     w-3/4
   `}
