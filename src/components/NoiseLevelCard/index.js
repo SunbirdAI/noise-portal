@@ -1,6 +1,6 @@
 import {
     NoiseLevelCardContainer,
-    DBLevel,
+    LargeFigure,
     LocationDescription,
     CardTitle,
     NoiseColorBand,
@@ -12,7 +12,7 @@ import {getColorId} from "../NoiseLevelMarker";
 export const GenericNumberCard = ({title, value}) => (
     <GenericNumberCardContainer>
         <CardTitle>{title}</CardTitle>
-        <DBLevel>{value}</DBLevel>
+        <LargeFigure>{value}</LargeFigure>
         <div>Noise Level: Quiet</div>
     </GenericNumberCardContainer>
 );
@@ -23,7 +23,7 @@ const LocationCard = ({location, title}) => (
         <NoiseColorBand color_id={getColorId(location.noise_level)}/>
         <LocationDescription>
             <CardTitle>{title}</CardTitle>
-            <DBLevel>{location.noise_level}dB</DBLevel>
+            <LargeFigure>{location.noise_level}dB</LargeFigure>
             <h2>Noise Level: Moderate</h2>
         </LocationDescription>
     </NoiseLevelCardContainer>

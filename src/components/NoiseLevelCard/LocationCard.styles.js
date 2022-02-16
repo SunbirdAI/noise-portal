@@ -53,11 +53,12 @@ export const CardTitle = styled.h2`
   `}
 `;
 
-export const DBLevel = styled.h2`
+export const LargeFigure = styled.h2`
   ${tw`
     text-4xl
     md:text-6xl
     font-bold
+    mb-10
   `}
 `;
 

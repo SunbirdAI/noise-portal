@@ -7,6 +7,7 @@ import Home from "./components/Home";
 import Sensors from "./components/Sensors";
 import NotFound from "./components/NotFound";
 import Location from "./components/Location";
+import Analysis from "./components/Analysis";
 
 const App = () => (
     <Router>
@@ -15,6 +16,7 @@ const App = () => (
             <Route path='/' element={<Home/>}/>
             <Route path='/sensors' element={<Sensors/>}/>
             <Route path='location/:locationId' element={<Location/>}/>
+            <Route path='/analysis' element={<Analysis/>}/>
             <Route path='/*' element={<NotFound/>}/>
         </Routes>
         {/*<GlobalStyle/>*/}
