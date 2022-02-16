@@ -8,7 +8,6 @@ import {
 import {MdVolumeUp, MdVolumeDown, MdVolumeMute} from "react-icons/md";
 import {divIcon} from "leaflet/dist/leaflet-src.esm";
 import {Marker, Popup} from "react-leaflet";
-import {Link} from "react-router-dom";
 
 
 const thresholds = [35, 40, 45, 50, 55, 60, 65, 70, 75, 80];
