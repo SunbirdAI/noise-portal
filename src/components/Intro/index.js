@@ -3,9 +3,9 @@ import {
 } from "./Intro.styles";
 
 
-const Intro = () => (
+const Intro = ({text}) => (
         <InfoContainer>
-            <p>Welcome to the Sunbird AI Noise Dashboard.Track noise levels across Kampala and Entebbe.</p>
+            <p>{text}</p>
         </InfoContainer>
 
 );
