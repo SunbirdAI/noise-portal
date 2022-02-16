@@ -3,6 +3,7 @@ import NoiseLevelCard, {GenericNumberCard} from "./NoiseLevelCard";
 import {useLocation} from "react-router-dom";
 import {LocationNameText} from "./NoiseLevelCard/LocationCard.styles";
 import NoiseLevelChart from "./NoiseLevelChart";
+import NoiseCategoryChart from "./NoiseCategoryChart";
 
 const Location = () => {
     const route = useLocation();
@@ -15,6 +16,7 @@ const Location = () => {
             <GenericNumberCard title={"Exceedances"} value={8}/>
             <NoiseLevelCard location={location} title={"Maximum"}/>
             <NoiseLevelChart/>
+            <NoiseCategoryChart/>
         </AnalysisWrapper>
     )
 };
