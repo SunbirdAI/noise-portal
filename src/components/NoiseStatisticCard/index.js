@@ -1,8 +1,8 @@
 import {CardTitle, LargeFigure, GenericNumberCardContainer} from "../NoiseLevelCard/LocationCard.styles";
 import {ColorDiv, NoiseMultiColorBand} from "./NoiseStatisticCard.styles";
 
-const noiseRanges = [...Array(11).keys()].map((color_id) => (
-    <ColorDiv color_id={color_id}/>
+const noiseRanges = [...Array(11).keys()].map((color_id, index) => (
+    <ColorDiv key={index} color_id={color_id}/>
 ));
 
 const getNoiseRangeColors = (noise_range) => {
