@@ -1,21 +1,25 @@
 import {FilterContainer} from "./LocationFilter.styles";
 import Select from "react-select";
 
-const options = [
-    {value: 'Entebbe', label: 'Entebbe'},
-    {value: 'Kampala', label: 'Kampala'},
-    {value: 'Uganda', label: 'Uganda'}
-]
 
+const LocationFilter = ({locations}) => {
+    const cities = new Set(locations.map((location) => location.city));
+    const getLocationOptions = () => (
+        [...cities].map((city, index) => ({
+            value: `${city}`,
+            label: `${city}`
+        }))
+    );
 
-const LocationFilter = () => (
-    <FilterContainer>
-        <Select
-            className="my-8 w-3/4 z-30"
-            options={options}
-            placeholder="Select a location"
-        />
-    </FilterContainer>
-)
+    return (
+        <FilterContainer>
+            <Select
+                className="my-8 w-3/4 z-30"
+                options={getLocationOptions()}
+                placeholder="Select a location"
+            />
+        </FilterContainer>
+    )
+}
 
 export default LocationFilter;

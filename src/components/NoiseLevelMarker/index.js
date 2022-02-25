@@ -40,7 +40,7 @@ const getCustomIcon = (noise_level) => {
 };
 
 const NoiseLevelMarker = ({location}) => (
-    <Marker position={location.coordinates} icon={getCustomIcon(location.noise_level)}>
+    <Marker position={[location.latitude, location.longitude]} icon={getCustomIcon(location.noise_level)}>
         <MapPopup location={location}/>
     </Marker>
 );
