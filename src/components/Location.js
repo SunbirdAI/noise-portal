@@ -9,13 +9,14 @@ const Location = () => {
     const route = useLocation();
     const { location } = route.state;
     console.log(route.state);
+
     return (
         <AnalysisWrapper>
             <LocationNameText>{location.name}</LocationNameText>
             <NoiseLevelCard location={location} title={"Average (Past 30 minutes)"}/>
             <GenericNumberCard title={"Exceedances"} value={8}/>
             <NoiseLevelCard location={location} title={"Maximum"}/>
-            <NoiseLevelChart/>
+            <NoiseLevelChart metrics={location.metrics}/>
             <NoiseCategoryChart/>
         </AnalysisWrapper>
     )
