@@ -11,7 +11,7 @@ const Analysis = () => (
     <>
         <Wrapper>
             <Intro text={introText}/>
-            <LocationFilter/>
+            <LocationFilter locations={[]}/>
         </Wrapper>
         <AnalysisWrapper>
             <NoiseStatisticCard title={"Quiet Areas"} value={8} noise_range={0}/>
