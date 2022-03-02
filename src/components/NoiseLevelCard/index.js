@@ -18,12 +18,12 @@ export const GenericNumberCard = ({title, value}) => (
 );
 
 
-const LocationCard = ({location, title}) => (
+const LocationCard = ({value, title}) => (
     <NoiseLevelCardContainer>
-        <NoiseColorBand color_id={getColorId(location.noise_level)}/>
+        <NoiseColorBand color_id={getColorId(value)}/>
         <LocationDescription>
             <CardTitle>{title}</CardTitle>
-            <LargeFigure>{location.noise_level}dB</LargeFigure>
+            <LargeFigure>{value}dB</LargeFigure>
             <h2>Noise Level: Moderate</h2>
         </LocationDescription>
     </NoiseLevelCardContainer>
