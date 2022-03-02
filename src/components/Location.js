@@ -34,7 +34,7 @@ const filterMetrics = (metrics, startDate, endDate) => {
     return metrics.filter(metric => metric.time_uploaded >= start && metric.time_uploaded <= end)
 }
 
-const getLatestMetric = (metrics) => (metrics.reduce((prev, current) =>
+export const getLatestMetric = (metrics) => (metrics.reduce((prev, current) =>
     prev.time_uploaded > current.time_uploaded ? prev : current
 ));
 
