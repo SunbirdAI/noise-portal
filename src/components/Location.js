@@ -41,6 +41,8 @@ export const getLatestMetric = (metrics) => (metrics.reduce((prev, current) =>
 const getTotalExceedances = (metrics) =>
     (metrics.reduce((prev, current) => prev + current.no_of_exceedances, 0));
 
+const getLocationName = (location) => `${location.parish}, ${location.division}, ${location.city}`;
+
 const Location = () => {
     const route = useLocation();
     const {location} = route.state;
@@ -75,7 +77,7 @@ const Location = () => {
 
     return (
         <AnalysisWrapper>
-            <LocationNameText>{location.name}</LocationNameText>
+            <LocationNameText>{getLocationName(location)}</LocationNameText>
             <NoiseLevelCard value={Math.round(metricsState.latestMetric.avg_db_level)}
                             title={"Average (Past 30 minutes)"}/>
             <NoiseLevelCard value={Math.round(metricsState.latestMetric.max_db_level)}

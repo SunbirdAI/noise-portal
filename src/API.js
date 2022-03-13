@@ -4,9 +4,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 const LOCATIONS_URL = `${API_URL}/devices/locations`;
 
-const METRICS_URL = `${API_URL}/`
-
-const getLocationMetricsURL = (locationId) => (`${API_URL}/device_metrics/device/${locationId}`);
+const getLocationMetricsURL = (locationId) => (`${API_URL}/devices/location_metrics/${locationId}`);
 
 const fetchLocations = async () => {
     return await (await fetch(LOCATIONS_URL)).json();
@@ -14,8 +12,9 @@ const fetchLocations = async () => {
 
 const fetchLocationMetrics = async (locationId) => {
     const endpoint = getLocationMetricsURL(locationId);
+    const metrics = await (await fetch(endpoint)).json();
 
-    return await (await fetch(endpoint)).json();
+    return metrics['location_metrics'];
 }
 
 export {
