@@ -38,12 +38,13 @@ const Home = () => {
     const fetchLocations = async () => {
         const locs = await API.fetchLocations();
         for (let i = 0; i < locs.length; i++) {
-            const id = locs[i].id;
+            // const id = locs[i].id;
             // console.log(getLocationMetricsURL(id));
-            locs[i]['metrics'] = await API.fetchLocationMetrics(id);
-            transformMetrics(locs[i]['metrics']);
-            locs[i]['metrics'] = filterMetrics(locs[i]['metrics']);
-            locs[i]['noise_level'] = getLatestMetric(locs[i]['metrics']).avg_db_level;
+            // locs[i]['metrics'] = await API.fetchLocationMetrics(id);
+            // transformMetrics(locs[i]['metrics']);
+            // locs[i]['metrics'] = filterMetrics(locs[i]['metrics']);
+            // locs[i]['noise_level'] = getLatestMetric(locs[i]['metrics']).avg_db_level;
+            locs[i]['noise_level'] = Math.round(locs[i]['latest_metric']['db_level']);
         }
         setLocations(locs);
         setIsLoading(false);
