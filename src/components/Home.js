@@ -10,11 +10,6 @@ import {getLatestMetric} from "./Location";
 
 const introText = "Welcome to the Sunbird AI Noise Dashboard. On this page, you can track noise levels across Kampala and Entebbe.";
 
-const transformMetrics = (metrics) => {
-    metrics.forEach(metric => {
-        metric['time_uploaded'] = new Date(metric['time_uploaded']).getTime()
-    });
-};
 
 const filterMetrics = (metrics) => {
     const today = new Date();
