@@ -88,7 +88,7 @@ const Location = () => {
         location.metrics = metrics;
         setMetricsState({
             ...metricsState,
-            metrics: metrics,
+            metrics: filterMetrics(location.metrics, pastDay, today),
             latestMetric: metrics[0],
             totalExceedances: getTotalExceedances(metrics)
         });
