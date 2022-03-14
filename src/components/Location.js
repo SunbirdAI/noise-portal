@@ -4,11 +4,12 @@ import {useLocation} from "react-router-dom";
 import {CardTitle, GenericNumberCardContainer, LocationNameText} from "./NoiseLevelCard/LocationCard.styles";
 import NoiseLevelChart from "./NoiseLevelChart";
 import NoiseCategoryChart from "./NoiseCategoryChart";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import DefinedRange from "react-date-range/dist/components/DefinedRange";
 import {timeFormat} from 'd3-time-format';
+import * as API from "../API";
 
 const today = new Date();
 const pastDay = new Date();
@@ -30,7 +31,6 @@ const getTimeFormat = (startDate, endDate) => {
 const filterMetrics = (metrics, startDate, endDate) => {
     const start = startDate.getTime();
     const end = endDate.getTime();
-
     return metrics.filter(metric => metric.time_uploaded >= start && metric.time_uploaded <= end)
 }
 
@@ -43,6 +43,12 @@ const getTotalExceedances = (metrics) =>
 
 const getLocationName = (location) => `${location.parish}, ${location.division}, ${location.city}`;
 
+const transformMetrics = (metrics) => {
+    metrics.forEach(metric => {
+        metric['time_uploaded'] = new Date(metric['time_uploaded']).getTime()
+    });
+};
+
 const Location = () => {
     const route = useLocation();
     const {location} = route.state;
@@ -53,14 +59,15 @@ const Location = () => {
             key: 'selection'
         }
     ]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const initialMetrics = filterMetrics(location.metrics, pastDay, today);
+    // const initialMetrics = filterMetrics(location.metrics, pastDay, today);
 
     const [metricsState, setMetricsState] = useState({
-        metrics: initialMetrics,
+        metrics: [],
         timeFormat: getTimeFormat(pastDay, today),
-        latestMetric: getLatestMetric(location.metrics),
-        totalExceedances: getTotalExceedances(initialMetrics)
+        latestMetric: null,
+        totalExceedances: 0
     });
 
     const onDateFilterChanged = (item) => {
@@ -75,7 +82,25 @@ const Location = () => {
         });
     }
 
-    return (
+    const fetchMetrics = async () => {
+        const metrics = await API.fetchLocationMetrics(location.id);
+        transformMetrics(metrics);
+        location.metrics = metrics;
+        setMetricsState({
+            ...metricsState,
+            metrics: metrics,
+            latestMetric: metrics[0],
+            totalExceedances: getTotalExceedances(metrics)
+        });
+        setIsLoading(false);
+    }
+
+    useEffect(() => {
+        if(!isLoading) return;
+        fetchMetrics();
+    }, [isLoading]);
+
+    return isLoading ? <></> : (
         <AnalysisWrapper>
             <LocationNameText>{getLocationName(location)}</LocationNameText>
             <NoiseLevelCard value={Math.round(metricsState.latestMetric.avg_db_level)}
