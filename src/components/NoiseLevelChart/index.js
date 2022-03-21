@@ -11,7 +11,7 @@ const fullDateFormat = timeFormat("%a %d %b %Y %I:%M %p");
 // }
 
 
-const NoiseLevelChart = ({metrics, timeFormat}) => (
+const NoiseLevelChart = ({metrics, timeFormat, dayLimit, nightLimit}) => (
     <ChartContainer>
         <CardTitle>Noise Levels Overtime (30 minute average)</CardTitle>
         <LineGraphContainer>
@@ -20,7 +20,8 @@ const NoiseLevelChart = ({metrics, timeFormat}) => (
                     <XAxis type="number" domain={['dataMin', 'dataMax']} dataKey="time_uploaded" tickFormatter={timeFormat}/>
                     {/*<XAxis angle={315} dy={10} ticks={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}/>*/}
                     <YAxis/>
-                    <ReferenceLine y={70} label="High noise" stroke="red"/>
+                    <ReferenceLine y={dayLimit} label={`High Daytime noise (${dayLimit}dB)`} stroke="red"/>
+                    <ReferenceLine y={nightLimit} label={`High Night-time noise (${nightLimit}dB)`} stroke="purple"/>
                     <Tooltip labelFormatter={fullDateFormat}/>
                     <Line type="monotone" dataKey="avg_db_level" stroke="#8884d8"/>
                 </LineChart>

@@ -109,6 +109,16 @@ const Location = () => {
                             title={"Maximum (Past 30 minutes)"}/>
             <GenericNumberCard title={"Exceedances (For time Period Selected)"} value={metricsState.totalExceedances}/>
             <GenericNumberCardContainer>
+                <CardTitle>Location Information</CardTitle>
+                <p className="p-2"><span className="font-bold">Area description</span>: {location.location_description}</p>
+                <p className="p-2"><span className="font-bold">Daytime Limit</span>: {location.day_limit}dB</p>
+                <p className="p-2"><span className="font-bold">Night-time Limit</span>: {location.night_limit}dB</p>
+                <p className="p-2">The above limits are as recommended in the
+                    <a className="text-blue-600" href="http://nema.go.ug/sites/all/themes/nema/docs/noise_standards_and_control_regulations.pdf">
+                         NEMA Noise Standards and Control Regulations
+                    </a></p>
+            </GenericNumberCardContainer>
+            <GenericNumberCardContainer>
                 <CardTitle>Choose a time range</CardTitle>
                 <DefinedRange
                     onChange={onDateFilterChanged}
@@ -119,8 +129,13 @@ const Location = () => {
                     direction="horizontal"
                 />
             </GenericNumberCardContainer>
-            <NoiseLevelChart metrics={metricsState.metrics} timeFormat={metricsState.timeFormat}/>
             <NoiseCategoryChart/>
+            <NoiseLevelChart
+                metrics={metricsState.metrics}
+                timeFormat={metricsState.timeFormat}
+                dayLimit={location.day_limit}
+                nightLimit={location.night_limit}
+            />
         </AnalysisWrapper>
     )
 };
