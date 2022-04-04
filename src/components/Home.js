@@ -6,20 +6,26 @@ import {NoiseLevelKey} from "./NoiseLevelKey";
 import {useEffect, useState} from "react";
 import * as API from "../API";
 import {useSearchParams} from "react-router-dom";
+import {Oval} from "react-loader-spinner";
+import LoaderSpinner from "./LoaderSpinner";
 
 const introText = "Welcome to the Sunbird AI Noise Dashboard. On this page, you can track noise levels across Kampala and Entebbe.";
 
 const getLocationOptions = (locations) => {
     const cities = new Set(locations.map(location => location.city));
-    const options = [...cities].map((city) => ({
-        value: `${city}`,
-        label: `${city}`
-    }));
-    options.push({
+    const optionsMap = new Map();
+    [...cities].forEach(city =>
+        optionsMap.set(city, {
+            value: `${city}`,
+            label: `${city}`
+        })
+    );
+    optionsMap.set('', {
         value: '',
         label: 'All Cities'
-    })
-    return options;
+    });
+
+    return optionsMap;
 }
 
 const Home = () => {
@@ -62,10 +68,10 @@ const Home = () => {
         <Wrapper>
             <Intro text={introText}/>
             <LocationFilter
-                selectedOption={options[options.length - 1]}
+                selectedOption={options.get(selectedCity)}
                 setSelectedCity={setSelectedCity}
-                options={options}/>
-            <HomePageMap locations={locations}/>
+                options={[...options.values()]}/>
+            {isLoading ? <LoaderSpinner span={2}/> : <HomePageMap locations={locations}/>}
             <NoiseLevelKey/>
         </Wrapper>
     );

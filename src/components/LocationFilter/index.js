@@ -1,10 +1,9 @@
 import {FilterContainer} from "./LocationFilter.styles";
 import Select from "react-select";
-import {useState} from "react";
 
 
 const LocationFilter = ({selectedOption, setSelectedCity, options}) => {
-
+    console.log(options, selectedOption);
     const handleChange = (selectedOption) => {
         setSelectedCity(selectedOption.value);
     };
@@ -17,6 +16,7 @@ const LocationFilter = ({selectedOption, setSelectedCity, options}) => {
                 options={options}
                 onChange={handleChange}
                 placeholder="Select a city"
+                key={Math.random() * (1000000 - 10000)}
             />
         </FilterContainer>
     )

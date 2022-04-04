@@ -10,6 +10,7 @@ import 'react-date-range/dist/theme/default.css';
 import DefinedRange from "react-date-range/dist/components/DefinedRange";
 import {timeFormat} from 'd3-time-format';
 import * as API from "../API";
+import LoaderSpinner from "./LoaderSpinner";
 
 const today = new Date();
 const pastDay = new Date();
@@ -96,46 +97,56 @@ const Location = () => {
     }
 
     useEffect(() => {
-        if(!isLoading) return;
+        if (!isLoading) return;
         fetchMetrics();
     }, [isLoading]);
 
-    return isLoading ? <></> : (
+    return (
         <AnalysisWrapper>
             <LocationNameText>{getLocationName(location)}</LocationNameText>
-            <NoiseLevelCard value={Math.round(metricsState.latestMetric.avg_db_level)}
-                            title={"Average (Past 30 minutes)"}/>
-            <NoiseLevelCard value={Math.round(metricsState.latestMetric.max_db_level)}
-                            title={"Maximum (Past 30 minutes)"}/>
-            <GenericNumberCard title={"Exceedances (For time Period Selected)"} value={metricsState.totalExceedances}/>
-            <GenericNumberCardContainer>
-                <CardTitle>Location Information</CardTitle>
-                <p className="p-2"><span className="font-bold">Area description</span>: {location.location_description}</p>
-                <p className="p-2"><span className="font-bold">Daytime Limit</span>: {location.day_limit}dB</p>
-                <p className="p-2"><span className="font-bold">Night-time Limit</span>: {location.night_limit}dB</p>
-                <p className="p-2">The above limits are as recommended in the
-                    <a className="text-blue-600" href="http://nema.go.ug/sites/all/themes/nema/docs/noise_standards_and_control_regulations.pdf">
-                         NEMA Noise Standards and Control Regulations
-                    </a></p>
-            </GenericNumberCardContainer>
-            <GenericNumberCardContainer>
-                <CardTitle>Choose a time range</CardTitle>
-                <DefinedRange
-                    onChange={onDateFilterChanged}
-                    // showSelectionPreview={true}
-                    // moveRangeOnFirstSelection={false}
-                    // months={1}
-                    ranges={dateState}
-                    direction="horizontal"
-                />
-            </GenericNumberCardContainer>
-            <NoiseCategoryChart/>
-            <NoiseLevelChart
-                metrics={metricsState.metrics}
-                timeFormat={metricsState.timeFormat}
-                dayLimit={location.day_limit}
-                nightLimit={location.night_limit}
-            />
+            {
+                isLoading ? <LoaderSpinner span={3}/> :
+                    <>
+                        <NoiseLevelCard value={Math.round(metricsState.latestMetric.avg_db_level)}
+                                        title={"Average (Past 30 minutes)"}/>
+                        <NoiseLevelCard value={Math.round(metricsState.latestMetric.max_db_level)}
+                                        title={"Maximum (Past 30 minutes)"}/>
+                        <GenericNumberCard title={"Exceedances (For time Period Selected)"}
+                                           value={metricsState.totalExceedances}/>
+                        <GenericNumberCardContainer>
+                            <CardTitle>Location Information</CardTitle>
+                            <p className="p-2"><span
+                                className="font-bold">Area description</span>: {location.location_description}</p>
+                            <p className="p-2"><span className="font-bold">Daytime Limit</span>: {location.day_limit}dB
+                            </p>
+                            <p className="p-2"><span
+                                className="font-bold">Night-time Limit</span>: {location.night_limit}dB</p>
+                            <p className="p-2">The above limits are as recommended in the
+                                <a className="text-blue-600"
+                                   href="http://nema.go.ug/sites/all/themes/nema/docs/noise_standards_and_control_regulations.pdf">
+                                    NEMA Noise Standards and Control Regulations
+                                </a></p>
+                        </GenericNumberCardContainer>
+                        <GenericNumberCardContainer>
+                            <CardTitle>Choose a time range</CardTitle>
+                            <DefinedRange
+                                onChange={onDateFilterChanged}
+                                // showSelectionPreview={true}
+                                // moveRangeOnFirstSelection={false}
+                                // months={1}
+                                ranges={dateState}
+                                direction="horizontal"
+                            />
+                        </GenericNumberCardContainer>
+                        <NoiseCategoryChart/>
+                        <NoiseLevelChart
+                            metrics={metricsState.metrics}
+                            timeFormat={metricsState.timeFormat}
+                            dayLimit={location.day_limit}
+                            nightLimit={location.night_limit}
+                        />
+                    </>
+            }
         </AnalysisWrapper>
     )
 };
