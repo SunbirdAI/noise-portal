@@ -5,19 +5,9 @@ import LocationFilter from "./LocationFilter";
 import {NoiseLevelKey} from "./NoiseLevelKey";
 import {useEffect, useState} from "react";
 import * as API from "../API";
-import {getLocationMetricsURL} from "../API";
-import {getLatestMetric} from "./Location";
 import {useSearchParams} from "react-router-dom";
 
 const introText = "Welcome to the Sunbird AI Noise Dashboard. On this page, you can track noise levels across Kampala and Entebbe.";
-
-
-const filterMetrics = (metrics) => {
-    const today = new Date();
-    const last2Weeks = new Date();
-    last2Weeks.setDate(today.getDate() - 14);
-    return metrics.filter((metric) => metric.time_uploaded >= last2Weeks.getTime());
-}
 
 const getLocationOptions = (locations) => {
     const cities = new Set(locations.map(location => location.city));
@@ -40,14 +30,6 @@ const Home = () => {
     const city = searchParams.get('city');
     const [selectedCity, setSelectedCity] = useState(city ? city : '');
     const options = getLocationOptions(unfilteredLocations);
-    console.log(locations, selectedCity);
-
-    const filterLocationsByCity = (city) => {
-        if (selectedCity === '') setLocations([...unfilteredLocations]);
-        else {
-            setLocations(unfilteredLocations.filter(location => location.city === city));
-        }
-    };
 
     const fetchLocations = async () => {
         const locs = await API.fetchLocations();
@@ -65,9 +47,16 @@ const Home = () => {
     }, [isLoading]);
 
     useEffect(() => {
+        const filterLocationsByCity = (city) => {
+            if (selectedCity === '') setLocations([...unfilteredLocations]);
+            else {
+                setLocations(unfilteredLocations.filter(location => location.city === city));
+            }
+        };
+
         if (unfilteredLocations) filterLocationsByCity(selectedCity);
         setSearchParams(selectedCity === '' ? {} : {city: selectedCity});
-    }, [selectedCity, unfilteredLocations]);
+    }, [selectedCity, unfilteredLocations, setSearchParams]);
 
     return (
         <Wrapper>
