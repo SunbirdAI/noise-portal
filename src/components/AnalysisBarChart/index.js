@@ -36,7 +36,7 @@ const data = [
    }
 ];
 
-const AnalysisBarChart = ({title, metric}) => (
+const AnalysisBarChart = ({title, metric, analysis}) => (
 	<ChartContainer className='w-full'>
 		<CardTitle>{title}</CardTitle>
 		<LineGraphContainer>
