@@ -18,7 +18,8 @@ const Analysis = () => {
         const analysis = response.map(({ location: { parish, noise_analysis} }) => ({
             day_time_average: noise_analysis.day_time_average,
             day_time_median: noise_analysis.day_time_median,
-            // division: parish ? `${parish}, ${division}` : division,
+            night_time_average: noise_analysis.night_time_average,
+            night_time_median: noise_analysis.night_time_median,
             parish: parish
         }));
         setAnalysis(analysis);
@@ -41,8 +42,14 @@ const Analysis = () => {
                 <NoiseStatisticCard title={"Moderately Noisy Areas"} value={8} noise_range={1}/>
                 <NoiseStatisticCard title={"Very Noisy Areas"} value={8} noise_range={2}/>
                 <AnalysisBarChartsContainer>
-                    <AnalysisBarChart title='Daily Average' metric='day_time_average' analysis={analysis}/>
-                    <AnalysisBarChart title='Daily Median' metric='day_time_median' analysis={analysis}/>
+                    <AnalysisBarChart title='Noise Analysis (3-day period)'
+                        metric_1='day_time_average'
+                        metric_2='day_time_median'
+                        metric_3='night_time_average'
+                        metric_4='night_time_median'
+                        analysis={analysis}
+                    />
+                    {/* <AnalysisBarChart title='Exceedances' metric='excedances'/> */}
                 </AnalysisBarChartsContainer>
             </AnalysisWrapper>
         </>
