@@ -3,7 +3,9 @@ import LocationFilter from "./LocationFilter";
 import Intro from "./Intro";
 import NoiseStatisticCard from "./NoiseStatisticCard";
 import {AnalysisBarChartsContainer} from "./AnalysisBarChart/AnalysisBarChart.styles";
+import {ExceedanceBarChartsContainer} from "./ExceedanceBarChart/ExceedanceBarChart.styles";
 import AnalysisBarChart from "./AnalysisBarChart";
+import ExceedanceBarChart from "./ExceedanceBarChart";
 import {useEffect, useState} from "react";
 import * as API from "../API";
 
@@ -15,11 +17,13 @@ const Analysis = () => {
 
     const fetchAnalysis = async () => {
         const response = await API.fetchAnalysis();
-        const analysis = response.map(({ location: { parish, noise_analysis} }) => ({
+        const analysis = response.map(({ location: { parish, noise_analysis } }) => ({
             day_time_average: noise_analysis.day_time_average,
             day_time_median: noise_analysis.day_time_median,
             night_time_average: noise_analysis.night_time_average,
             night_time_median: noise_analysis.night_time_median,
+            day_time_exceedances: noise_analysis.day_time_exceedances,
+            night_time_exceedances: noise_analysis.night_time_exceedances,
             parish: parish
         }));
         setAnalysis(analysis);
@@ -42,14 +46,18 @@ const Analysis = () => {
                 <NoiseStatisticCard title={"Moderately Noisy Areas"} value={8} noise_range={1}/>
                 <NoiseStatisticCard title={"Very Noisy Areas"} value={8} noise_range={2}/>
                 <AnalysisBarChartsContainer>
-                    <AnalysisBarChart title='Noise Analysis (3-day period)'
-                        metric_1='day_time_average'
-                        metric_2='day_time_median'
-                        metric_3='night_time_average'
-                        metric_4='night_time_median'
+                    <AnalysisBarChart title='Noise Analysis (3-day period)' metrics={analysis}
+                        day_time_average='day_time_average'
+                        day_time_median='day_time_median'
+                        night_time_average='night_time_average'
+                        night_time_median='night_time_median'
                         analysis={analysis}
                     />
-                    {/* <AnalysisBarChart title='Exceedances' metric='excedances'/> */}
+                    <ExceedanceBarChart title='Exceedances (3-day period)'
+                        day_time_exceedances='day_time_exceedances'
+                        night_time_exceedances='night_time_exceedances'
+                        analysis={analysis}
+                    />
                 </AnalysisBarChartsContainer>
             </AnalysisWrapper>
         </>

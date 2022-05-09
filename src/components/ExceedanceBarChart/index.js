@@ -4,7 +4,7 @@ import {LineGraphContainer} from "../NoiseLevelChart/NoiseLevelChart.styles";
 import {ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, Legend, Bar} from "recharts";
 
 
-const AnalysisBarChart = ({title, day_time_average, day_time_median, night_time_average, night_time_median, analysis}) => (
+const ExceedanceBarChart = ({title, day_time_exceedances, night_time_exceedances, analysis}) => (
 	<ChartContainer className='w-full'>
 		<CardTitle>{title}</CardTitle>
 		<LineGraphContainer>
@@ -16,14 +16,12 @@ const AnalysisBarChart = ({title, day_time_average, day_time_median, night_time_
 					<YAxis/>
 					<Tooltip/>
 					<Legend/>
-					<Bar dataKey={day_time_average} fill='#b8d6d1'/>
-					<Bar dataKey={day_time_median} fill='#82a6ad'/>
-					<Bar dataKey={night_time_average} fill='#75085c'/>
-					<Bar dataKey={night_time_median} fill='#430a4a'/>
+					<Bar dataKey={day_time_exceedances} fill='#82a6ad'/>
+					<Bar dataKey={night_time_exceedances} fill='#430a4a'/>
 				</BarChart>
 			</ResponsiveContainer>
 		</LineGraphContainer>
 	</ChartContainer>
 );
 
-export default AnalysisBarChart;
+export default ExceedanceBarChart;
