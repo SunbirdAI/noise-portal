@@ -3,9 +3,9 @@ import LocationFilter from "./LocationFilter";
 import Intro from "./Intro";
 import NoiseStatisticCard from "./NoiseStatisticCard";
 import {AnalysisBarChartsContainer} from "./AnalysisBarChart/AnalysisBarChart.styles";
-import {ExceedanceBarChartsContainer} from "./ExceedanceBarChart/ExceedanceBarChart.styles";
 import AnalysisBarChart from "./AnalysisBarChart";
 import ExceedanceBarChart from "./ExceedanceBarChart";
+import LoaderSpinner from "./LoaderSpinner";
 import {useEffect, useState} from "react";
 import * as API from "../API";
 
@@ -43,20 +43,22 @@ const Analysis = () => {
                 <NoiseStatisticCard title={"Quiet Areas"} value={8} noise_range={0}/>
                 <NoiseStatisticCard title={"Moderately Noisy Areas"} value={8} noise_range={1}/>
                 <NoiseStatisticCard title={"Very Noisy Areas"} value={8} noise_range={2}/>
-                <AnalysisBarChartsContainer>
-                    <AnalysisBarChart title='Noise Analysis (3-day period)' metrics={analysis}
-                        day_time_average='day_time_average'
-                        day_time_median='day_time_median'
-                        night_time_average='night_time_average'
-                        night_time_median='night_time_median'
-                        analysis={analysis}
-                    />
-                    <ExceedanceBarChart title='Exceedances (3-day period)'
-                        day_time_exceedances='day_time_exceedances'
-                        night_time_exceedances='night_time_exceedances'
-                        analysis={analysis}
-                    />
-                </AnalysisBarChartsContainer>
+                { isLoading ? <LoaderSpinner span={3}/> :
+                    <AnalysisBarChartsContainer>
+                        <AnalysisBarChart title='Noise Analysis (3-day period)' metrics={analysis}
+                            day_time_average='day_time_average'
+                            day_time_median='day_time_median'
+                            night_time_average='night_time_average'
+                            night_time_median='night_time_median'
+                            analysis={analysis}
+                        />
+                        <ExceedanceBarChart title='Exceedances (3-day period)'
+                            day_time_exceedances='day_time_exceedances'
+                            night_time_exceedances='night_time_exceedances'
+                            analysis={analysis}
+                        />
+                    </AnalysisBarChartsContainer>
+                }
             </AnalysisWrapper>
         </>
     );
