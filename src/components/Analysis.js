@@ -18,9 +18,7 @@ const Analysis = () => {
     const fetchAnalysis = async () => {
         const response = await API.fetchAnalysis();
         const analysis = response.map(({ location: { parish, noise_analysis } }) => ({
-            day_time_average: noise_analysis.day_time_average,
             day_time_median: noise_analysis.day_time_median,
-            night_time_average: noise_analysis.night_time_average,
             night_time_median: noise_analysis.night_time_median,
             day_time_exceedances: noise_analysis.day_time_exceedances,
             night_time_exceedances: noise_analysis.night_time_exceedances,
