@@ -5,6 +5,7 @@ import {
     PopUpContainer,
     NoiseLevelDescription, ViewLocationButton
 } from "./NoiseLevelMarker.styles";
+import {basicNoiseThresholds} from "../../utils";
 import {MdVolumeUp, MdVolumeDown, MdVolumeMute} from "react-icons/md";
 import {divIcon} from "leaflet/dist/leaflet-src.esm";
 import {Marker, Popup} from "react-leaflet";
@@ -14,8 +15,8 @@ const thresholds = [35, 40, 45, 50, 55, 60, 65, 70, 75, 80];
 
 
 const getImage = (noise_level) => {
-    if (noise_level < 55) return (<MdVolumeMute/>)
-    if (noise_level < 70) return (<MdVolumeDown/>)
+    if (noise_level < basicNoiseThresholds.low) return (<MdVolumeMute/>)
+    if (noise_level < basicNoiseThresholds.high) return (<MdVolumeDown/>)
     return (<MdVolumeUp/>)
 };
 

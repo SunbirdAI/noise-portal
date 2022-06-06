@@ -57,3 +57,8 @@ export const sampleLocations = randomIndices.map((idx) => noiseData[idx]).map((d
         noise_level: index % 5 === 0 ? '80': dataPoint['Noise-Noise_Measurement']
     }
 ));
+
+export const basicNoiseThresholds = {
+    "low": 55,
+    "high": 70
+};

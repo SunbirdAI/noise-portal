@@ -11,5 +11,6 @@ export const AnalysisBarChartsContainer = styled.div`
         justify-items-center
         content-around
         rounded-lg
+        my-5
     `}
 `;
