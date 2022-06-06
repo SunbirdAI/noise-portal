@@ -6,11 +6,12 @@ import {
     NoiseColorBand,
     GenericNumberCardContainer
 } from "./LocationCard.styles";
+import {basicNoiseThresholds} from "../../utils";
 import {getColorId} from "../NoiseLevelMarker";
 
 const getNoiseLevelDescription = (noiseLevel) => {
-    if (noiseLevel < 55) return "Quiet";
-    if(noiseLevel < 70) return "Moderate";
+    if (noiseLevel < basicNoiseThresholds.low) return "Quiet";
+    if(noiseLevel < basicNoiseThresholds.high) return "Moderate";
     return "Noisy";
 }
 export const GenericNumberCard = ({title, value}) => (

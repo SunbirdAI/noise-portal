@@ -6,7 +6,6 @@ import {NoiseLevelKey} from "./NoiseLevelKey";
 import {useEffect, useState} from "react";
 import * as API from "../API";
 import {useSearchParams} from "react-router-dom";
-import {Oval} from "react-loader-spinner";
 import LoaderSpinner from "./LoaderSpinner";
 
 const introText = "Welcome to the Sunbird AI Noise Dashboard. On this page, you can track noise levels across Kampala and Entebbe.";
