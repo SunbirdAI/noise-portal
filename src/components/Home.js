@@ -6,7 +6,6 @@ import {NoiseLevelKey} from "./NoiseLevelKey";
 import {useEffect, useState} from "react";
 import * as API from "../API";
 import {useSearchParams} from "react-router-dom";
-import {Oval} from "react-loader-spinner";
 import LoaderSpinner from "./LoaderSpinner";
 
 const introText = "Welcome to the Sunbird AI Noise Dashboard. On this page, you can track noise levels across Kampala and Entebbe.";
@@ -38,9 +37,10 @@ const Home = () => {
     const options = getLocationOptions(unfilteredLocations);
 
     const fetchLocations = async () => {
-        const locs = await API.fetchLocations();
+        const locs = await API.fetchHomePageData();
+        // const locs = await API.fetchLocations();
         for (let i = 0; i < locs.length; i++) {
-            locs[i]['noise_level'] = Math.round(locs[i]['latest_metric']['db_level']);
+            locs[i]['noise_level'] = Math.round(locs[i]['metrics']['location_hourly_metrics'][0]['hourly_avg_db_level']);
         }
         setUnfilteredLocations(locs);
         setIsLoading(false);
