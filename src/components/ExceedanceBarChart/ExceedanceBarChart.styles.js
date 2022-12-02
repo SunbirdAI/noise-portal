@@ -1,7 +1,7 @@
 import tw, {styled} from "twin.macro";
 
 
-export const AnalysisBarChartsContainer = styled.div`
+export const ExceedanceBarChartsContainer = styled.div`
     ${tw`
         grid
         grid-cols-1
@@ -11,6 +11,5 @@ export const AnalysisBarChartsContainer = styled.div`
         justify-items-center
         content-around
         rounded-lg
-        my-5
     `}
 `;
