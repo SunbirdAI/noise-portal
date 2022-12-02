@@ -8,7 +8,7 @@ export const LocationNameText = styled.h1`
     md:text-4xl
     text-center
     col-span-1
-    md:col-span-3
+    md:col-span-4
   `}
 `;
 
@@ -71,5 +71,16 @@ export const GenericNumberCardContainer = styled.div`
     bg-white
     rounded-lg
     shadow-md
+  `}
+`;
+
+export const InfoCardContainer = styled.div`
+  ${tw`
+    grid
+    grid-cols-1
+    md:col-span-2
+    content-around
+    bg-white
+    rounded-lg
   `}
 `;

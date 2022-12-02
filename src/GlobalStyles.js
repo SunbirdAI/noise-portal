@@ -20,7 +20,7 @@ export const AnalysisWrapper = styled.div`
   ${tw`
     grid
     grid-cols-1
-    md:grid-cols-3
+    md:grid-cols-4
     gap-2
     md:gap-4
     mx-5

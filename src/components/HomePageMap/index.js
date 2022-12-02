@@ -13,6 +13,7 @@ const SetViewOnCitySelect = ({newCenter, animateRef}) => {
 
     return null;
 }
+
 const HomePageMap = ({locations}) => {
     const animateRef = useRef(false);
     animateRef.current = !animateRef.current;

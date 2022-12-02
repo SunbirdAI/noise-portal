@@ -1,7 +1,7 @@
 import {AnalysisWrapper} from "../GlobalStyles";
 import NoiseLevelCard, {GenericNumberCard} from "./NoiseLevelCard";
 import {useLocation} from "react-router-dom";
-import {CardTitle, GenericNumberCardContainer, LocationNameText} from "./NoiseLevelCard/LocationCard.styles";
+import {CardTitle, GenericNumberCardContainer, LocationNameText, InfoCardContainer} from "./NoiseLevelCard/LocationCard.styles";
 import NoiseLevelChart from "./NoiseLevelChart";
 import NoiseCategoryChart from "./NoiseCategoryChart";
 import {useEffect, useState} from "react";
@@ -46,13 +46,14 @@ const getLocationName = (location) => `${location.parish}, ${location.division},
 
 const transformMetrics = (metrics) => {
     metrics.forEach(metric => {
-        metric['time_uploaded'] = new Date(metric['time_uploaded']).getTime()
+        metric['time_uploaded'] = new Date(metric['time_uploaded']).getTime();
     });
 };
 
 const Location = () => {
     const route = useLocation();
     const {location} = route.state;
+    console.log(location);
     const [dateState, setDateState] = useState([
         {
             startDate: pastDay,
@@ -60,14 +61,14 @@ const Location = () => {
             key: 'selection'
         }
     ]);
-    const [isLoading, setIsLoading] = useState(true);
+    // const [isLoading, setIsLoading] = useState(true);
 
     // const initialMetrics = filterMetrics(location.metrics, pastDay, today);
 
     const [metricsState, setMetricsState] = useState({
         metrics: [],
         timeFormat: getTimeFormat(pastDay, today),
-        latestMetric: null,
+        latestMetric: location.metrics["location_hourly_metrics"][0],
         totalExceedances: 0
     });
 
@@ -83,37 +84,31 @@ const Location = () => {
         });
     }
 
-    const fetchMetrics = async () => {
-        const metrics = await API.fetchLocationMetrics(location.id);
-        transformMetrics(metrics);
-        location.metrics = metrics;
-        setMetricsState({
-            ...metricsState,
-            metrics: filterMetrics(location.metrics, pastDay, today),
-            latestMetric: metrics[0],
-            totalExceedances: getTotalExceedances(metrics)
-        });
-        setIsLoading(false);
-    }
+    // const fetchMetrics = async () => {
+    //     const metrics = await API.fetchLocationMetrics(location.id);
+    //     transformMetrics(metrics);
+    //     location.metrics = metrics;
+    //     setMetricsState({
+    //         ...metricsState,
+    //         metrics: filterMetrics(location.metrics, pastDay, today),
+    //         latestMetric: metrics[0],
+    //         totalExceedances: getTotalExceedances(metrics)
+    //     });
+    //     setIsLoading(false);
+    // }
 
-    useEffect(() => {
-        if (!isLoading) return;
-        fetchMetrics();
-    }, [isLoading]);
+    // useEffect(() => {
+    //     if (!isLoading) return;
+    //     // fetchMetrics();
+    // }, [isLoading]);
 
     return (
         <AnalysisWrapper>
             <LocationNameText>{getLocationName(location)}</LocationNameText>
             {
-                isLoading ? <LoaderSpinner span={3}/> :
+                // isLoading ? <LoaderSpinner span={3}/> :
                     <>
-                        <NoiseLevelCard value={Math.round(metricsState.latestMetric.avg_db_level)}
-                                        title={"Average (Past 30 minutes)"}/>
-                        <NoiseLevelCard value={Math.round(metricsState.latestMetric.max_db_level)}
-                                        title={"Maximum (Past 30 minutes)"}/>
-                        <GenericNumberCard title={"Exceedances (For time Period Selected)"}
-                                           value={metricsState.totalExceedances}/>
-                        <GenericNumberCardContainer>
+                        <InfoCardContainer>
                             <CardTitle>Location Information</CardTitle>
                             <p className="p-2"><span
                                 className="font-bold">Area description</span>: {location.location_description}</p>
@@ -126,19 +121,28 @@ const Location = () => {
                                    href="http://nema.go.ug/sites/all/themes/nema/docs/noise_standards_and_control_regulations.pdf">
                                     NEMA Noise Standards and Control Regulations
                                 </a></p>
-                        </GenericNumberCardContainer>
-                        <GenericNumberCardContainer>
-                            <CardTitle>Choose a time range</CardTitle>
-                            <DefinedRange
-                                onChange={onDateFilterChanged}
-                                // showSelectionPreview={true}
-                                // moveRangeOnFirstSelection={false}
-                                // months={1}
-                                ranges={dateState}
-                                direction="horizontal"
-                            />
-                        </GenericNumberCardContainer>
-                        <NoiseCategoryChart/>
+                        </InfoCardContainer>
+                        <InfoCardContainer/>
+                        <NoiseLevelCard value={Math.round(metricsState.latestMetric.hourly_avg_db_level)}
+                                        title={"Last Hour Average"}/>
+                        <NoiseLevelCard value={Math.round(metricsState.latestMetric.hourly_max_db_level)}
+                                        title={"Last Hour Maximum"}/>
+                        <NoiseLevelCard title={"Last Hour Median"}
+                                           value={Math.round(metricsState.latestMetric.hourly_median_db_level)}/>
+                        <GenericNumberCard title={"Last Hour Exceedances"}
+                                           value={metricsState.latestMetric.hourly_no_of_exceedances}/>
+                        {/*<GenericNumberCardContainer>*/}
+                        {/*    <CardTitle>Choose a time range</CardTitle>*/}
+                        {/*    <DefinedRange*/}
+                        {/*        onChange={onDateFilterChanged}*/}
+                        {/*        // showSelectionPreview={true}*/}
+                        {/*        // moveRangeOnFirstSelection={false}*/}
+                        {/*        // months={1}*/}
+                        {/*        ranges={dateState}*/}
+                        {/*        direction="horizontal"*/}
+                        {/*    />*/}
+                        {/*</GenericNumberCardContainer>*/}
+                        {/*<NoiseCategoryChart/>*/}
                         <NoiseLevelChart
                             metrics={metricsState.metrics}
                             timeFormat={metricsState.timeFormat}
