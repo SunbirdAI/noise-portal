@@ -4,7 +4,7 @@ import {useLocation} from "react-router-dom";
 import {CardTitle, LocationNameText, InfoCardContainer} from "./NoiseLevelCard/LocationCard.styles";
 import NoiseLevelChart from "./NoiseLevelChart";
 // import NoiseCategoryChart from "./NoiseCategoryChart";
-import {useState} from "react";
+// import {useState} from "react";
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 // import DefinedRange from "react-date-range/dist/components/DefinedRange";
@@ -70,14 +70,23 @@ const Location = () => {
 
     // const initialMetrics = filterMetrics(location.metrics, pastDay, today);
 
-    const [metricsState, _] = useState({
+    // const [metricsState, _] = useState({
+    //     dailyMetrics: location.metrics["location_daily_metrics"],
+    //     hourlyMetrics: location.metrics["location_hourly_metrics"],
+    //     dailyTimeFormat: getTimeFormat(pastMonth, today),
+    //     hourlyTimeFormat: getTimeFormat(pastDay, today),
+    //     latestMetric: location.metrics["location_hourly_metrics"][0],
+    //     totalExceedances: 0
+    // });
+
+    const metricsState = {
         dailyMetrics: location.metrics["location_daily_metrics"],
         hourlyMetrics: location.metrics["location_hourly_metrics"],
         dailyTimeFormat: getTimeFormat(pastMonth, today),
         hourlyTimeFormat: getTimeFormat(pastDay, today),
         latestMetric: location.metrics["location_hourly_metrics"][0],
         totalExceedances: 0
-    });
+    };
 
     // const onDateFilterChanged = (item) => {
     //     const startDate = item.selection.startDate, endDate = item.selection.endDate;
