@@ -15,6 +15,8 @@ import LoaderSpinner from "./LoaderSpinner";
 const today = new Date();
 const pastMonth = new Date();
 pastMonth.setDate(new Date().getDate() - 30);
+const pastDay = new Date();
+pastDay.setDate(pastDay.getDate() - 1);
 const hourFormat = timeFormat("%a %I:%M %p");
 const dayFormat = timeFormat("%a %d %b");
 
@@ -25,7 +27,7 @@ const daysBetween = (firstDate, secondDate) => (
 
 const getTimeFormat = (startDate, endDate) => {
     const numOfDaysBetween = daysBetween(startDate, endDate);
-    console.log(`Number of days between: ${numOfDaysBetween}`);
+    // console.log(`Number of days between: ${numOfDaysBetween}`);
     if (numOfDaysBetween <= 2) return hourFormat;
     else return dayFormat;
 }
@@ -33,7 +35,7 @@ const getTimeFormat = (startDate, endDate) => {
 const filterMetrics = (metrics, startDate, endDate) => {
     const start = startDate.getTime();
     const end = endDate.getTime();
-    return metrics.filter(metric => metric.time_uploaded >= start && metric.time_uploaded <= end)
+    return metrics.filter(metric => metric.date >= start && metric.date <= end)
 }
 
 export const getLatestMetric = (metrics) => (metrics.reduce((prev, current) =>
@@ -56,6 +58,7 @@ const Location = () => {
     const {location} = route.state;
     console.log(location);
     transformMetrics(location.metrics['location_daily_metrics']);
+    transformMetrics(location.metrics['location_hourly_metrics']);
     const [dateState, setDateState] = useState([
         {
             startDate: pastMonth,
@@ -68,8 +71,10 @@ const Location = () => {
     // const initialMetrics = filterMetrics(location.metrics, pastDay, today);
 
     const [metricsState, setMetricsState] = useState({
-        metrics: location.metrics["location_daily_metrics"],
-        timeFormat: getTimeFormat(pastMonth, today),
+        dailyMetrics: location.metrics["location_daily_metrics"],
+        hourlyMetrics: location.metrics["location_hourly_metrics"],
+        dailyTimeFormat: getTimeFormat(pastMonth, today),
+        hourlyTimeFormat: getTimeFormat(pastDay, today),
         latestMetric: location.metrics["location_hourly_metrics"][0],
         totalExceedances: 0
     });
@@ -146,8 +151,18 @@ const Location = () => {
                         {/*</GenericNumberCardContainer>*/}
                         {/*<NoiseCategoryChart/>*/}
                         <NoiseLevelChart
-                            metrics={metricsState.metrics}
-                            timeFormat={metricsState.timeFormat}
+                            title={"Daily and Nightly Noise Levels Overtime"}
+                            metrics={metricsState.dailyMetrics}
+                            lines={["daily_avg_db_level", "daily_median_db_level", "daily_max_db_level"]}
+                            timeFormat={metricsState.dailyTimeFormat}
+                            dayLimit={location.day_limit}
+                            nightLimit={location.night_limit}
+                        />
+                        <NoiseLevelChart
+                            title={"Hourly Noise Levels (Past 24 hours)"}
+                            metrics={filterMetrics(metricsState.hourlyMetrics, pastDay, today)}
+                            lines={["hourly_avg_db_level", "hourly_median_db_level", "hourly_max_db_level"]}
+                            timeFormat={metricsState.hourlyTimeFormat}
                             dayLimit={location.day_limit}
                             nightLimit={location.night_limit}
                         />

@@ -11,9 +11,9 @@ const fullDateFormat = timeFormat("%a %d %b %Y %I:%M %p");
 // }
 
 
-const NoiseLevelChart = ({metrics, timeFormat, dayLimit, nightLimit}) => (
+const NoiseLevelChart = ({title, metrics, lines, timeFormat, dayLimit, nightLimit}) => (
     <ChartContainer>
-        <CardTitle>Daily and Nightly Average Noise Levels Overtime</CardTitle>
+        <CardTitle>{title}</CardTitle>
         <LineGraphContainer>
             <ResponsiveContainer width="95%" height="100%">
                 <LineChart data={metrics}>
@@ -23,9 +23,9 @@ const NoiseLevelChart = ({metrics, timeFormat, dayLimit, nightLimit}) => (
                     <ReferenceLine y={dayLimit} label={`High Daytime noise (${dayLimit}dB)`} stroke="red"/>
                     <ReferenceLine y={nightLimit} label={`High Night-time noise (${nightLimit}dB)`} stroke="purple"/>
                     <Tooltip labelFormatter={fullDateFormat}/>
-                    <Line type="monotone" dataKey="daily_avg_db_level" stroke="#8884d8"/>
-                    <Line type="monotone" dataKey="daily_median_db_level" stroke="#aaa555"/>
-                    <Line type="monotone" dataKey="daily_max_db_level" stroke="#bb6792"/>
+                    <Line type="monotone" dataKey={lines[0]} stroke="#8884d8"/>
+                    <Line type="monotone" dataKey={lines[1]} stroke="#aaa555"/>
+                    <Line type="monotone" dataKey={lines[2]} stroke="#bb6792"/>
                     <Legend/>
                 </LineChart>
             </ResponsiveContainer>
