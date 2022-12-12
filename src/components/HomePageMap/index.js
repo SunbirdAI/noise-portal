@@ -1,5 +1,5 @@
 import {MyMapContainer} from "./HomePageMap.styles";
-import {sampleLocations} from "../../utils";
+// import {sampleLocations} from "../../utils";
 import 'leaflet/dist/leaflet.css';
 import {MapContainer, TileLayer, useMap} from "react-leaflet";
 import NoiseLevelMarker from "../NoiseLevelMarker";

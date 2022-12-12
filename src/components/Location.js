@@ -1,16 +1,16 @@
 import {AnalysisWrapper} from "../GlobalStyles";
 import NoiseLevelCard, {GenericNumberCard} from "./NoiseLevelCard";
 import {useLocation} from "react-router-dom";
-import {CardTitle, GenericNumberCardContainer, LocationNameText, InfoCardContainer} from "./NoiseLevelCard/LocationCard.styles";
+import {CardTitle, LocationNameText, InfoCardContainer} from "./NoiseLevelCard/LocationCard.styles";
 import NoiseLevelChart from "./NoiseLevelChart";
-import NoiseCategoryChart from "./NoiseCategoryChart";
-import {useEffect, useState} from "react";
+// import NoiseCategoryChart from "./NoiseCategoryChart";
+import {useState} from "react";
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
-import DefinedRange from "react-date-range/dist/components/DefinedRange";
+// import DefinedRange from "react-date-range/dist/components/DefinedRange";
 import {timeFormat} from 'd3-time-format';
-import * as API from "../API";
-import LoaderSpinner from "./LoaderSpinner";
+// import * as API from "../API";
+// import LoaderSpinner from "./LoaderSpinner";
 
 const today = new Date();
 const pastMonth = new Date();
@@ -38,12 +38,12 @@ const filterMetrics = (metrics, startDate, endDate) => {
     return metrics.filter(metric => metric.date >= start && metric.date <= end)
 }
 
-export const getLatestMetric = (metrics) => (metrics.reduce((prev, current) =>
-    prev.time_uploaded > current.time_uploaded ? prev : current
-));
+// export const getLatestMetric = (metrics) => (metrics.reduce((prev, current) =>
+//     prev.time_uploaded > current.time_uploaded ? prev : current
+// ));
 
-const getTotalExceedances = (metrics) =>
-    (metrics.reduce((prev, current) => prev + current.no_of_exceedances, 0));
+// const getTotalExceedances = (metrics) =>
+//     (metrics.reduce((prev, current) => prev + current.no_of_exceedances, 0));
 
 const getLocationName = (location) => `${location.parish}, ${location.division}, ${location.city}`;
 
@@ -59,18 +59,18 @@ const Location = () => {
     console.log(location);
     transformMetrics(location.metrics['location_daily_metrics']);
     transformMetrics(location.metrics['location_hourly_metrics']);
-    const [dateState, setDateState] = useState([
-        {
-            startDate: pastMonth,
-            endDate: today,
-            key: 'selection'
-        }
-    ]);
+    // const [dateState, setDateState] = useState([
+    //     {
+    //         startDate: pastMonth,
+    //         endDate: today,
+    //         key: 'selection'
+    //     }
+    // ]);
     // const [isLoading, setIsLoading] = useState(true);
 
     // const initialMetrics = filterMetrics(location.metrics, pastDay, today);
 
-    const [metricsState, setMetricsState] = useState({
+    const [metricsState, _] = useState({
         dailyMetrics: location.metrics["location_daily_metrics"],
         hourlyMetrics: location.metrics["location_hourly_metrics"],
         dailyTimeFormat: getTimeFormat(pastMonth, today),
@@ -79,17 +79,17 @@ const Location = () => {
         totalExceedances: 0
     });
 
-    const onDateFilterChanged = (item) => {
-        const startDate = item.selection.startDate, endDate = item.selection.endDate;
-        setDateState([item.selection]);
-        const newMetrics = filterMetrics(location.metrics, startDate, endDate);
-        setMetricsState({
-            ...metricsState,
-            metrics: newMetrics,
-            timeFormat: getTimeFormat(startDate, endDate),
-            totalExceedances: getTotalExceedances(newMetrics)
-        });
-    }
+    // const onDateFilterChanged = (item) => {
+    //     const startDate = item.selection.startDate, endDate = item.selection.endDate;
+    //     setDateState([item.selection]);
+    //     const newMetrics = filterMetrics(location.metrics, startDate, endDate);
+    //     setMetricsState({
+    //         ...metricsState,
+    //         metrics: newMetrics,
+    //         timeFormat: getTimeFormat(startDate, endDate),
+    //         totalExceedances: getTotalExceedances(newMetrics)
+    //     });
+    // }
 
     // const fetchMetrics = async () => {
     //     const metrics = await API.fetchLocationMetrics(location.id);
