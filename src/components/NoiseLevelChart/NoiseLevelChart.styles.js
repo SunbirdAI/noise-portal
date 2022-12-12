@@ -9,14 +9,14 @@ export const ChartContainer = styled.div`
     bg-white
     rounded-lg
     shadow-md
-    md:col-span-2
+    md:col-span-4
   `}
 `;
 
 export const LineGraphContainer = styled.div`
   ${tw`
-    h-52
+    h-60
     w-full
-    md:h-80
+    md:h-96
   `}
 `;

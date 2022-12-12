@@ -13,8 +13,8 @@ import * as API from "../API";
 import LoaderSpinner from "./LoaderSpinner";
 
 const today = new Date();
-const pastDay = new Date();
-pastDay.setDate(new Date().getDate() - 1);
+const pastMonth = new Date();
+pastMonth.setDate(new Date().getDate() - 30);
 const hourFormat = timeFormat("%a %I:%M %p");
 const dayFormat = timeFormat("%a %d %b");
 
@@ -25,6 +25,7 @@ const daysBetween = (firstDate, secondDate) => (
 
 const getTimeFormat = (startDate, endDate) => {
     const numOfDaysBetween = daysBetween(startDate, endDate);
+    console.log(`Number of days between: ${numOfDaysBetween}`);
     if (numOfDaysBetween <= 2) return hourFormat;
     else return dayFormat;
 }
@@ -46,7 +47,7 @@ const getLocationName = (location) => `${location.parish}, ${location.division},
 
 const transformMetrics = (metrics) => {
     metrics.forEach(metric => {
-        metric['time_uploaded'] = new Date(metric['time_uploaded']).getTime();
+        metric['date'] = new Date(metric['date']).getTime();
     });
 };
 
@@ -54,9 +55,10 @@ const Location = () => {
     const route = useLocation();
     const {location} = route.state;
     console.log(location);
+    transformMetrics(location.metrics['location_daily_metrics']);
     const [dateState, setDateState] = useState([
         {
-            startDate: pastDay,
+            startDate: pastMonth,
             endDate: today,
             key: 'selection'
         }
@@ -66,8 +68,8 @@ const Location = () => {
     // const initialMetrics = filterMetrics(location.metrics, pastDay, today);
 
     const [metricsState, setMetricsState] = useState({
-        metrics: [],
-        timeFormat: getTimeFormat(pastDay, today),
+        metrics: location.metrics["location_daily_metrics"],
+        timeFormat: getTimeFormat(pastMonth, today),
         latestMetric: location.metrics["location_hourly_metrics"][0],
         totalExceedances: 0
     });
