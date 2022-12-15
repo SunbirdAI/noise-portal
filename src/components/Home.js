@@ -41,6 +41,7 @@ const Home = () => {
         // const locs = await API.fetchLocations();
         for (let i = 0; i < locs.length; i++) {
             locs[i]['noise_level'] = Math.round(locs[i]['metrics']['location_hourly_metrics'][0]['hourly_avg_db_level']);
+            locs[i]['name'] = `${locs[i]['parish']}, ${locs[i]['division']}`;
         }
         setUnfilteredLocations(locs);
         setIsLoading(false);
