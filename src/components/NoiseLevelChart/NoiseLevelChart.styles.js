@@ -10,6 +10,7 @@ export const ChartContainer = styled.div`
     rounded-lg
     shadow-md
     md:col-span-4
+    p-4
   `}
 `;
 

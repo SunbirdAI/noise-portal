@@ -9,6 +9,8 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 // import DefinedRange from "react-date-range/dist/components/DefinedRange";
 import {timeFormat} from 'd3-time-format';
+import HourlyNoiseHeatMap from "./HourlyNoiseHeatMap";
+import {get} from "leaflet/src/dom/DomUtil";
 // import * as API from "../API";
 // import LoaderSpinner from "./LoaderSpinner";
 
@@ -31,6 +33,30 @@ const getTimeFormat = (startDate, endDate) => {
     if (numOfDaysBetween <= 2) return hourFormat;
     else return dayFormat;
 }
+
+const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+const getHeatMapData = (hourlyMetrics) => {
+    const data = new Array(7).fill(0).map(() => new Array(24).fill(-1));
+    const meta = new Array(7).fill(0).map(() => new Array(24).fill('No data'));
+    hourlyMetrics.forEach((metric) => {
+        const date = new Date(metric.date);
+        const day = date.getDay();
+        // const dayWord = days[day];
+        // console.log(dayWord);
+        const hour = (metric.hour + 3) % 24;
+        const dbLevel = Math.round(metric.hourly_avg_db_level * 100) / 100;
+        if(data[day][hour] === -1) {
+            data[day][hour] = Math.round(metric.hourly_avg_db_level);
+            meta[day][hour] = `Average DB Level = ${dbLevel} on ${date.toDateString()} at ${date.toTimeString()}`
+        }
+    });
+    // console.log(`Hourly data: ${data[0]}`);
+    return {
+        'data': data,
+        'meta': meta
+    };
+};
 
 const filterMetrics = (metrics, startDate, endDate) => {
     const start = startDate.getTime();
@@ -87,6 +113,7 @@ const Location = () => {
         latestMetric: location.metrics["location_hourly_metrics"][0],
         totalExceedances: 0
     };
+    // getHeatMapData(metricsState.hourlyMetrics);
 
     // const onDateFilterChanged = (item) => {
     //     const startDate = item.selection.startDate, endDate = item.selection.endDate;
@@ -123,59 +150,60 @@ const Location = () => {
             <LocationNameText>{getLocationName(location)}</LocationNameText>
             {
                 // isLoading ? <LoaderSpinner span={3}/> :
-                    <>
-                        <InfoCardContainer>
-                            <CardTitle>Location Information</CardTitle>
-                            <p className="p-2"><span
-                                className="font-bold">Area description</span>: {location.location_description}</p>
-                            <p className="p-2"><span className="font-bold">Daytime Limit</span>: {location.day_limit}dB
-                            </p>
-                            <p className="p-2"><span
-                                className="font-bold">Night-time Limit</span>: {location.night_limit}dB</p>
-                            <p className="p-2">The above limits are as recommended in the
-                                <a className="text-blue-600"
-                                   href="http://nema.go.ug/sites/all/themes/nema/docs/noise_standards_and_control_regulations.pdf">
-                                    NEMA Noise Standards and Control Regulations
-                                </a></p>
-                        </InfoCardContainer>
-                        <InfoCardContainer/>
-                        <NoiseLevelCard value={Math.round(metricsState.latestMetric.hourly_avg_db_level)}
-                                        title={"Last Hour Average"}/>
-                        <NoiseLevelCard value={Math.round(metricsState.latestMetric.hourly_max_db_level)}
-                                        title={"Last Hour Maximum"}/>
-                        <NoiseLevelCard title={"Last Hour Median"}
-                                           value={Math.round(metricsState.latestMetric.hourly_median_db_level)}/>
-                        <GenericNumberCard title={"Last Hour Exceedances"}
-                                           value={metricsState.latestMetric.hourly_no_of_exceedances}/>
-                        {/*<GenericNumberCardContainer>*/}
-                        {/*    <CardTitle>Choose a time range</CardTitle>*/}
-                        {/*    <DefinedRange*/}
-                        {/*        onChange={onDateFilterChanged}*/}
-                        {/*        // showSelectionPreview={true}*/}
-                        {/*        // moveRangeOnFirstSelection={false}*/}
-                        {/*        // months={1}*/}
-                        {/*        ranges={dateState}*/}
-                        {/*        direction="horizontal"*/}
-                        {/*    />*/}
-                        {/*</GenericNumberCardContainer>*/}
-                        {/*<NoiseCategoryChart/>*/}
-                        <NoiseLevelChart
-                            title={"Daily and Nightly Noise Levels Overtime"}
-                            metrics={metricsState.dailyMetrics}
-                            lines={["daily_avg_db_level", "daily_median_db_level", "daily_max_db_level"]}
-                            timeFormat={metricsState.dailyTimeFormat}
-                            dayLimit={location.day_limit}
-                            nightLimit={location.night_limit}
-                        />
-                        <NoiseLevelChart
-                            title={"Hourly Noise Levels (Past 24 hours)"}
-                            metrics={filterMetrics(metricsState.hourlyMetrics, pastDay, today)}
-                            lines={["hourly_avg_db_level", "hourly_median_db_level", "hourly_max_db_level"]}
-                            timeFormat={metricsState.hourlyTimeFormat}
-                            dayLimit={location.day_limit}
-                            nightLimit={location.night_limit}
-                        />
-                    </>
+                <>
+                    <InfoCardContainer>
+                        <CardTitle>Location Information</CardTitle>
+                        <p className="p-2"><span
+                            className="font-bold">Area description</span>: {location.location_description}</p>
+                        <p className="p-2"><span className="font-bold">Daytime Limit</span>: {location.day_limit}dB
+                        </p>
+                        <p className="p-2"><span
+                            className="font-bold">Night-time Limit</span>: {location.night_limit}dB</p>
+                        <p className="p-2">The above limits are as recommended in the
+                            <a className="text-blue-600"
+                               href="http://nema.go.ug/sites/all/themes/nema/docs/noise_standards_and_control_regulations.pdf">
+                                NEMA Noise Standards and Control Regulations
+                            </a></p>
+                    </InfoCardContainer>
+                    <InfoCardContainer/>
+                    <NoiseLevelCard value={Math.round(metricsState.latestMetric.hourly_avg_db_level)}
+                                    title={"Last Hour Average"}/>
+                    <NoiseLevelCard value={Math.round(metricsState.latestMetric.hourly_max_db_level)}
+                                    title={"Last Hour Maximum"}/>
+                    <NoiseLevelCard title={"Last Hour Median"}
+                                    value={Math.round(metricsState.latestMetric.hourly_median_db_level)}/>
+                    <GenericNumberCard title={"Last Hour Exceedances"}
+                                       value={metricsState.latestMetric.hourly_no_of_exceedances}/>
+                    {/*<GenericNumberCardContainer>*/}
+                    {/*    <CardTitle>Choose a time range</CardTitle>*/}
+                    {/*    <DefinedRange*/}
+                    {/*        onChange={onDateFilterChanged}*/}
+                    {/*        // showSelectionPreview={true}*/}
+                    {/*        // moveRangeOnFirstSelection={false}*/}
+                    {/*        // months={1}*/}
+                    {/*        ranges={dateState}*/}
+                    {/*        direction="horizontal"*/}
+                    {/*    />*/}
+                    {/*</GenericNumberCardContainer>*/}
+                    {/*<NoiseCategoryChart/>*/}
+                    <NoiseLevelChart
+                        title={"Daily and Nightly Noise Levels Overtime"}
+                        metrics={metricsState.dailyMetrics}
+                        lines={["daily_avg_db_level", "daily_median_db_level", "daily_max_db_level"]}
+                        timeFormat={metricsState.dailyTimeFormat}
+                        dayLimit={location.day_limit}
+                        nightLimit={location.night_limit}
+                    />
+                    <NoiseLevelChart
+                        title={"Hourly Noise Levels (Past 24 hours)"}
+                        metrics={filterMetrics(metricsState.hourlyMetrics, pastDay, today)}
+                        lines={["hourly_avg_db_level", "hourly_median_db_level", "hourly_max_db_level"]}
+                        timeFormat={metricsState.hourlyTimeFormat}
+                        dayLimit={location.day_limit}
+                        nightLimit={location.night_limit}
+                    />
+                    <HourlyNoiseHeatMap data_with_meta={getHeatMapData(metricsState.hourlyMetrics)}/>
+                </>
             }
         </AnalysisWrapper>
     )
