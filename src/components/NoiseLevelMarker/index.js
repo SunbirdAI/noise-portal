@@ -1,8 +1,8 @@
 import { renderToStaticMarkup } from "react-dom/server";
+import LoaderSpinner from "../LoaderSpinner";
 import {
     NoiseLevelMarkerContainer,
-    LocationText,
-    PopUpContainer
+    LocationText
 } from "./NoiseLevelMarker.styles";
 import { basicNoiseThresholds } from "../../utils";
 import { MdVolumeUp, MdVolumeDown, MdVolumeMute } from "react-icons/md";
@@ -105,11 +105,27 @@ const NoiseLevelMarker = ({ location }) => {
         >
             {showPopup && (
                 <Popup>
-                    <PopUpContainer>
+                    <div>
                         <LocationText>
                             <h3 style={{ margin: 0, fontWeight: 600 }}>{location.name}</h3>
                         </LocationText>
-                        {loading && <p style={{ textAlign: 'center', margin: '8px 0' }}>Loading...</p>}
+                        {loading && (
+                            <div style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                minHeight: '60px',
+                                width: '100%'
+                                }}>
+                                    <LoaderSpinner size={32} />
+                                        <span style={{
+                                        marginTop: '8px',
+                                        fontSize: '14px',
+                                        color: '#64748b'
+                                        }}>Loading...</span>
+                            </div>
+                                )}
                         {error && <p style={{ color: 'red', textAlign: 'center', margin: '8px 0' }}>{error}</p>}
                         <div style={{ width: '100%' }}>
                         {deviceDetails && (
@@ -134,7 +150,7 @@ const NoiseLevelMarker = ({ location }) => {
                             </>
                         )}
                         </div>
-                    </PopUpContainer>
+                    </div>
                 </Popup>
             )}
         </Marker>

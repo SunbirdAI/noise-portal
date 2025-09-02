@@ -53,8 +53,8 @@ const MCUPopupContent = ({ data, location }) => {
             backgroundColor: '#10b981',
             color: 'white',
             padding: '2px 8px',
-            borderRadius: '12px',
-            fontSize: '11px',
+            borderRadius: '30px',
+            fontSize: '10px',
             fontWeight: '500'
           }}>
             ONLINE
