@@ -16,7 +16,7 @@ const App = () => (
             <Route path='/' element={<Home/>}/>
             <Route path='/sensors' element={<Sensors/>}/>
             <Route path='location/:locationId' element={<Location/>}/>
-            <Route path='/analysis' element={<Analysis/>}/>
+            {/* <Route path='/analysis' element={<Analysis/>}/> */}
             <Route path='/*' element={<NotFound/>}/>
         </Routes>
         {/*<GlobalStyle/>*/}

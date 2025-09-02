@@ -1,5 +1,6 @@
 import noiseData from './data/noise_data.json';
 
+
 const categoryNames = {
     '1': "car-or-truck",
     '2': "motor-vehicle-horn",
@@ -27,6 +28,31 @@ const categories = [...new Set(noiseData.map((dataPoint) =>
 ))].filter((cat) => !isNaN(parseInt(cat)));
 
 categories.sort((cat1, cat2) => parseInt(cat1) - parseInt(cat2));
+
+// Format date as '14th July 2025: 4:54 pm'
+export const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'pm' : 'am';
+    const formattedHours = hours % 12 || 12;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    const suffix = getNumberSuffix(day);
+    return `${day}${suffix} ${month} ${year}: ${formattedHours}:${formattedMinutes} ${ampm}`;
+};
+
+const getNumberSuffix = (day) => {
+    if (day > 3 && day < 21) return 'th';
+    switch (day % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+    }
+};
 
 export const options = categories.map((cat, index) => ({
     categoryName: cat,

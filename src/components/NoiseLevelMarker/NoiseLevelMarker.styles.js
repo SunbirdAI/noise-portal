@@ -14,23 +14,28 @@ export const NoiseLevelMarkerContainer = styled.div`
     grid-cols-1
     justify-items-center
     content-center
-    w-[50px]
-    h-[50px]
+    w-[28px]
+    h-[28px]
+    p-0
   `}
 `;
 
 export const PopUpContainer = styled.div`
   ${tw`
-        grid
-        grid-cols-1
-        gap-2
-        bg-white
-        justify-center
-        justify-items-center
-        w-[150px]
-        h-[70px]
-        md:h-[100px]
-    `}
+    grid
+    grid-cols-1
+    gap-2
+    bg-white
+    justify-center
+    justify-items-center
+    w-[220px]
+    h-auto
+    min-h-[100px]
+    p-3
+    rounded-lg
+    shadow-lg
+  `}
+  word-break: break-word;
 `;
 
 export const LocationText = styled.div`
