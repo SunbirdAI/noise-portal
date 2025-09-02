@@ -2,14 +2,12 @@ import { renderToStaticMarkup } from "react-dom/server";
 import {
     NoiseLevelMarkerContainer,
     LocationText,
-    PopUpContainer,
-    NoiseLevelDescription, ViewLocationButton
+    PopUpContainer
 } from "./NoiseLevelMarker.styles";
 import { basicNoiseThresholds } from "../../utils";
-import { MdVolumeUp, MdVolumeDown, MdVolumeMute, MdBatteryFull, MdBatteryStd, MdBatteryAlert } from "react-icons/md";
+import { MdVolumeUp, MdVolumeDown, MdVolumeMute } from "react-icons/md";
 import { divIcon } from "leaflet/dist/leaflet-src.esm";
-import { Marker, Popup, useMap } from "react-leaflet";
-import { detectSensorType } from "../../API";
+import { Marker, Popup } from "react-leaflet";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as API from "../../API";
@@ -34,7 +32,6 @@ export const getColorId = (noise_level) => {
 const getCustomIcon = (noise_level) => {
     const iconMarkup = renderToStaticMarkup(
         <NoiseLevelMarkerContainer color_id={getColorId(noise_level)}>
-            <h2>{`${noise_level}dB`}</h2>
             {getImage(noise_level)}
         </NoiseLevelMarkerContainer>
     );
@@ -84,9 +81,9 @@ const NoiseLevelMarker = ({ location }) => {
         }
     };
 
-    const handleViewLocation = () => {
-        navigate(`/location/${location.id}`, { state: { location } });
-    };
+    // const handleViewLocation = () => {
+    //     navigate(`/location/${location.id}`, { state: { location } });
+    // };
 
     // Show popup on hover
     const handleMouseOver = () => {
@@ -108,10 +105,13 @@ const NoiseLevelMarker = ({ location }) => {
         >
             {showPopup && (
                 <Popup>
-                    <div>
-                        <h3>{location.name}</h3>
-                        {loading && <p>Loading...</p>}
-                        {error && <p style={{ color: 'red' }}>{error}</p>}
+                    <PopUpContainer>
+                        <LocationText>
+                            <h3 style={{ margin: 0, fontWeight: 600 }}>{location.name}</h3>
+                        </LocationText>
+                        {loading && <p style={{ textAlign: 'center', margin: '8px 0' }}>Loading...</p>}
+                        {error && <p style={{ color: 'red', textAlign: 'center', margin: '8px 0' }}>{error}</p>}
+                        <div style={{ width: '100%' }}>
                         {deviceDetails && (
                             <>
                                 {deviceDetails.type === 'mcu' && (
@@ -125,18 +125,16 @@ const NoiseLevelMarker = ({ location }) => {
                                     />
                                 )}
                                 {deviceDetails.type === 'unknown' && (
-                                    <div>
-                                        <p><strong>Device Type:</strong> Unknown</p>
-                                        <p><strong>Location:</strong> {location.name}</p>
-                                        <p><strong>Noise Level:</strong> {location.noise_level ?? 'N/A'} dB</p>
+                                    <div style={{ textAlign: 'center', margin: '8px 0' }}>
+                                        <p style={{ margin: '4px 0' }}><strong>Device Type:</strong> Unknown</p>
+                                        <p style={{ margin: '4px 0' }}><strong>Location:</strong> {location.name}</p>
+                                        <p style={{ margin: '4px 0' }}><strong>Noise Level:</strong> {location.noise_level ?? 'N/A'} dB</p>
                                     </div>
                                 )}
                             </>
                         )}
-                        <ViewLocationButton onClick={handleViewLocation}>
-                            View Location
-                        </ViewLocationButton>
-                    </div>
+                        </div>
+                    </PopUpContainer>
                 </Popup>
             )}
         </Marker>
