@@ -7,15 +7,14 @@ export const NoiseLevelMarkerContainer = styled.div`
   ${props => props.color_id >= 8 ? redText : blackText}
   ${tw`
     shadow-lg
-    text-base
     font-medium
     rounded-full
     grid
     grid-cols-1
     justify-items-center
     content-center
-    w-[28px]
-    h-[28px]
+    w-[50px]
+    h-[50px]
     p-0
   `}
 `;

@@ -32,6 +32,7 @@ export const getColorId = (noise_level) => {
 const getCustomIcon = (noise_level) => {
     const iconMarkup = renderToStaticMarkup(
         <NoiseLevelMarkerContainer color_id={getColorId(noise_level)}>
+            <p>{`${noise_level}dB`}</p>
             {getImage(noise_level)}
         </NoiseLevelMarkerContainer>
     );
@@ -90,17 +91,13 @@ const NoiseLevelMarker = ({ location }) => {
         setShowPopup(true);
         fetchDeviceDetails();
     };
-    const handleMouseOut = () => {
-        setShowPopup(false);
-    };
 
     return (
         <Marker
             position={[location.latitude, location.longitude]}
             icon={getCustomIcon(location.noise_level)}
             eventHandlers={{
-                mouseover: handleMouseOver,
-                mouseout: handleMouseOut
+                mouseover: handleMouseOver
             }}
         >
             {showPopup && (
