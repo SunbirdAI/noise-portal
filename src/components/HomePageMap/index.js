@@ -2,10 +2,10 @@ import {MyMapContainer} from "./HomePageMap.styles";
 import 'leaflet/dist/leaflet.css';
 import 'react-leaflet-markercluster/dist/styles.min.css';
 import {MapContainer, TileLayer, useMap} from "react-leaflet";
-import NoiseLevelMarker from "../NoiseLevelMarker";
 import {useRef} from "react";
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import L from "leaflet";
+import NoiseLevelMarker from "../NoiseLevelMarker";
 
 const SetViewOnCitySelect = ({newCenter, animateRef}) => {
     const map = useMap();
@@ -182,7 +182,7 @@ const clusterStyles = `
 </style>
 `;
 
-const HomePageMap = ({locations}) => {
+const HomePageMap = ({ locations, deviceDetailsMap }) => {
     const animateRef = useRef(false);
     animateRef.current = !animateRef.current;
     
@@ -219,7 +219,7 @@ const HomePageMap = ({locations}) => {
                     
                     <MarkerClusterGroup
                         // Clustering behavior
-                        maxClusterRadius={70}
+                        maxClusterRadius={50}
                         disableClusteringAtZoom={16}
                         spiderfyOnMaxZoom={true}
                         showCoverageOnHover={true}
@@ -269,6 +269,7 @@ const HomePageMap = ({locations}) => {
                             <NoiseLevelMarker 
                                 key={location.id || index} 
                                 location={location}
+                                deviceDetails={deviceDetailsMap[location.id]}
                             />
                         ))}
                     </MarkerClusterGroup>

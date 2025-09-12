@@ -70,6 +70,11 @@ const MCUPopupContent = ({ data, location }) => {
           <span>Average dB level:</span>
           <span style={{ fontWeight: '600' }}>{latestMetric.avg_db_level.toFixed(0)} dB</span>
         </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <span>Max dB level:</span>
+          <span style={{ fontWeight: '600' }}>{latestMetric.max_db_level.toFixed(0)} dB</span>
+        </div>
         
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <span>Number of exceedances</span>
@@ -77,7 +82,7 @@ const MCUPopupContent = ({ data, location }) => {
         </div>
         
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <span>in the last hour:</span>
+          <span><b>In the last hour</b></span>
           <span></span>
         </div>
         

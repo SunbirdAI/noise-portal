@@ -5,8 +5,8 @@ import LocationFilter from "./LocationFilter";
 import {NoiseLevelKey} from "./NoiseLevelKey";
 import {useEffect, useState} from "react";
 import * as API from "../API";
-import {useSearchParams} from "react-router-dom";
 import LoaderSpinner from "./LoaderSpinner";
+import { useSearchParams } from "react-router-dom";
 
 const introText = "Welcome to the Sunbird AI Noise Dashboard. On this page, you can track noise levels across Kampala and Entebbe.";
 
@@ -36,6 +36,7 @@ const Home = () => {
     const city = searchParams.get('city');
     const [selectedCity, setSelectedCity] = useState(city ? city : '');
     const options = getLocationOptions(unfilteredLocations);
+    const [deviceDetailsMap, setDeviceDetailsMap] = useState({});
 
     const fetchLocations = async () => {
         try {
@@ -73,17 +74,54 @@ const Home = () => {
             setUnfilteredLocations(locs);
             setIsLoading(false);
             console.log('Location data loaded successfully:', locs.length, 'locations');
+            return locs;
         } catch (error) {
             console.error('Error fetching locations:', error);
             setError('Failed to load location data. Please try again later.');
             setIsLoading(false);
+            return [];
         }
     }
 
+    // Fetch device details for all locations
+    const fetchDeviceDetailsForLocations = async (locs) => {
+        const detailsArr = await Promise.all(
+            locs.map(async (location) => {
+                const deviceName = location.device_name ?? location.name ?? "";
+                const sensorType = API.detectSensorType(deviceName);
+                if (sensorType === "MCU") {
+                    const details = await API.getMCUDeviceDetails(deviceName);
+                    const metrics = details.get_metrics || [];
+                    const latestMetric = metrics.sort((a, b) => new Date(b.time_uploaded) - new Date(a.time_uploaded))[0];
+                    const avgDbLevel = latestMetric ? latestMetric.avg_db_level : null;
+                    return [location.id, { type: "mcu", data: details, avgDbLevel }];
+                } else if (sensorType === "AI") {
+                    const [inference, environment] = await Promise.all([
+                        API.getAISoundInference(deviceName),
+                        API.getAIEnvironmentalParams(deviceName),
+                    ]);
+                    return [location.id, { type: "ai", inference, environment }];
+                } else {
+                    return [location.id, { type: "unknown" }];
+                }
+            })
+        );
+        setDeviceDetailsMap(Object.fromEntries(detailsArr));
+    };
+
     useEffect(() => {
-        if (!isLoading) return;
-        fetchLocations();
-    }, [isLoading]);
+        const fetchAll = async () => {
+            setIsLoading(true);
+            setError(null);
+            const locs = await fetchLocations();
+            if (locs && locs.length > 0) {
+                await fetchDeviceDetailsForLocations(locs);
+            }
+            setIsLoading(false);
+        };
+        fetchAll();
+        // eslint-disable-next-line
+    }, []);
 
     useEffect(() => {
         const filterLocationsByCity = (city) => {
@@ -116,7 +154,12 @@ const Home = () => {
                     {error}
                 </div>
             )}
-            {isLoading ? <LoaderSpinner span={2}/> : <HomePageMap locations={locations}/>}
+            {isLoading ? <LoaderSpinner span={2}/> : 
+                <HomePageMap 
+                    locations={locations} 
+                    deviceDetailsMap={deviceDetailsMap} 
+                />
+            }
             <NoiseLevelKey/>
         </Wrapper>
     );

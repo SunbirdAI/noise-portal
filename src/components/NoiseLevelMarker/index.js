@@ -1,5 +1,4 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import LoaderSpinner from "../LoaderSpinner";
 import {
     NoiseLevelMarkerContainer,
     LocationText
@@ -9,8 +8,6 @@ import { MdVolumeUp, MdVolumeDown, MdVolumeMute } from "react-icons/md";
 import { divIcon } from "leaflet/dist/leaflet-src.esm";
 import { Marker, Popup } from "react-leaflet";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import * as API from "../../API";
 import MCUPopupContent from "./MCUPopupContent";
 import AIPopupContent from "./AIPopupContent";
 
@@ -29,11 +26,13 @@ export const getColorId = (noise_level) => {
     return 10;
 };
 
-const getCustomIcon = (noise_level) => {
+const getCustomIcon = (noise_level, avgDbLevel = null) => {
+    // Use avgDbLevel if provided (for MCU), otherwise use noise_level
+    const valueForColor = avgDbLevel !== null ? avgDbLevel : noise_level;
     const iconMarkup = renderToStaticMarkup(
-        <NoiseLevelMarkerContainer color_id={getColorId(noise_level)}>
-            <p>{`${noise_level}dB`}</p>
-            {getImage(noise_level)}
+        <NoiseLevelMarkerContainer color_id={getColorId(valueForColor)}>
+            <p>{`${Math.round(valueForColor)}dB`}</p>
+            {getImage(valueForColor)}
         </NoiseLevelMarkerContainer>
     );
     return divIcon({ html: iconMarkup });
@@ -41,11 +40,7 @@ const getCustomIcon = (noise_level) => {
 
 
 
-const NoiseLevelMarker = ({ location }) => {
-    const navigate = useNavigate();
-    const [deviceDetails, setDeviceDetails] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+const NoiseLevelMarker = ({ location, deviceDetails }) => {
     const [showPopup, setShowPopup] = useState(false);
 
     // Validate coordinates before rendering marker
@@ -55,47 +50,22 @@ const NoiseLevelMarker = ({ location }) => {
         return null;
     }
 
-    const fetchDeviceDetails = async () => {
-        if (deviceDetails) return; // Avoid re-fetching if already loaded
-        setLoading(true);
-        setError(null);
-        try {
-            // Use detectSensorType for robust detection
-            const deviceName = location.device_name ?? location.name ?? "";
-            const sensorType = API.detectSensorType(deviceName);
-            if (sensorType === 'MCU') {
-                const details = await API.getMCUDeviceDetails(deviceName);
-                setDeviceDetails({ type: 'mcu', data: details });
-            } else if (sensorType === 'AI') {
-                const [inference, environment] = await Promise.all([
-                    API.getAISoundInference(deviceName),
-                    API.getAIEnvironmentalParams(deviceName)
-                ]);
-                setDeviceDetails({ type: 'ai', inference, environment });
-            } else {
-                setDeviceDetails({ type: 'unknown' });
-            }
-        } catch (err) {
-            setError('Failed to fetch device details');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // const handleViewLocation = () => {
-    //     navigate(`/location/${location.id}`, { state: { location } });
-    // };
-
     // Show popup on hover
-    const handleMouseOver = () => {
-        setShowPopup(true);
-        fetchDeviceDetails();
-    };
+    const handleMouseOver = () => setShowPopup(true);
 
     return (
         <Marker
+            key={
+                deviceDetails && deviceDetails.type === 'mcu'
+                    ? `mcu-${location.id}-${deviceDetails.avgDbLevel}`
+                    : `other-${location.id}-${location.noise_level}`
+            }
             position={[location.latitude, location.longitude]}
-            icon={getCustomIcon(location.noise_level)}
+            icon={
+                deviceDetails && deviceDetails.type === 'mcu'
+                    ? getCustomIcon(location.noise_level, deviceDetails.avgDbLevel)
+                    : getCustomIcon(location.noise_level)
+            }
             eventHandlers={{
                 mouseover: handleMouseOver
             }}
@@ -106,24 +76,6 @@ const NoiseLevelMarker = ({ location }) => {
                         <LocationText>
                             <h3 style={{ margin: 0, fontWeight: 600 }}>{location.name}</h3>
                         </LocationText>
-                        {loading && (
-                            <div style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                minHeight: '60px',
-                                width: '100%'
-                                }}>
-                                    <LoaderSpinner size={32} />
-                                        <span style={{
-                                        marginTop: '8px',
-                                        fontSize: '14px',
-                                        color: '#64748b'
-                                        }}>Loading...</span>
-                            </div>
-                                )}
-                        {error && <p style={{ color: 'red', textAlign: 'center', margin: '8px 0' }}>{error}</p>}
                         <div style={{ width: '100%' }}>
                         {deviceDetails && (
                             <>
