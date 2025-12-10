@@ -26,13 +26,23 @@ export const getColorId = (noise_level) => {
     return 10;
 };
 
-const getCustomIcon = (noise_level, avgDbLevel = null) => {
-    // Use avgDbLevel if provided (for MCU), otherwise use noise_level
-    const valueForColor = avgDbLevel !== null ? avgDbLevel : noise_level;
+const getCustomIcon = (location, deviceDetails = null) => {
+    let dbValue = location.noise_level; // fallback
+    
+    // For MCU devices, use average dB level
+    if (deviceDetails?.type === 'mcu' && deviceDetails.avgDbLevel !== null) {
+        dbValue = deviceDetails.avgDbLevel;
+    }
+    
+    // For AI devices, use Sound Pressure (db_level from environment)
+    if (deviceDetails?.type === 'ai' && deviceDetails.environment?.db_level !== null) {
+        dbValue = deviceDetails.environment.db_level;
+    }
+    
     const iconMarkup = renderToStaticMarkup(
-        <NoiseLevelMarkerContainer color_id={getColorId(valueForColor)}>
-            <p>{`${Math.round(valueForColor)}dB`}</p>
-            {getImage(valueForColor)}
+        <NoiseLevelMarkerContainer color_id={getColorId(dbValue)}>
+            <p>{`${Math.round(dbValue)}dB`}</p>
+            {getImage(dbValue)}
         </NoiseLevelMarkerContainer>
     );
     return divIcon({ html: iconMarkup });
@@ -53,19 +63,22 @@ const NoiseLevelMarker = ({ location, deviceDetails }) => {
     // Show popup on hover
     const handleMouseOver = () => setShowPopup(true);
 
+    // Generate unique key for re-rendering
+    const getMarkerKey = () => {
+        if (deviceDetails?.type === 'mcu') {
+            return `mcu-${location.id}-${deviceDetails.avgDbLevel}`;
+        }
+        if (deviceDetails?.type === 'ai') {
+            return `ai-${location.id}-${deviceDetails.environment?.db_level}`;
+        }
+        return `default-${location.id}-${location.noise_level}`;
+    };
+
     return (
         <Marker
-            key={
-                deviceDetails && deviceDetails.type === 'mcu'
-                    ? `mcu-${location.id}-${deviceDetails.avgDbLevel}`
-                    : `other-${location.id}-${location.noise_level}`
-            }
+            key={getMarkerKey()}
             position={[location.latitude, location.longitude]}
-            icon={
-                deviceDetails && deviceDetails.type === 'mcu'
-                    ? getCustomIcon(location.noise_level, deviceDetails.avgDbLevel)
-                    : getCustomIcon(location.noise_level)
-            }
+            icon={getCustomIcon(location, deviceDetails)}
             eventHandlers={{
                 mouseover: handleMouseOver
             }}

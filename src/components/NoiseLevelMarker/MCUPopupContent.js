@@ -42,7 +42,7 @@ const MCUPopupContent = ({ data, location }) => {
           fontWeight: '600',
           color: '#000'
         }}>
-          {location.name}
+          {data.device_id}
         </h3>
         <div style={{
           fontSize: '11px',

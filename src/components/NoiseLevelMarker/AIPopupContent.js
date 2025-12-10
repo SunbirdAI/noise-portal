@@ -25,7 +25,7 @@ const AIPopupContent = ({ inference, environment, location }) => {
           fontWeight: '600',
           color: '#000'
         }}>
-          {location.name}
+          {environment.device}
         </h3>
         <div style={{
           fontSize: '11px',
@@ -52,6 +52,11 @@ const AIPopupContent = ({ inference, environment, location }) => {
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <span>Upper limit - day</span>
           <span style={{ fontWeight: '600' }}>{location.day_limit} dB</span>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <span>Upper limit - night</span>
+          <span style={{ fontWeight: '600' }}>{location.night_limit} dB</span>
         </div>
         
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
