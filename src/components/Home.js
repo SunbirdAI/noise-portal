@@ -92,9 +92,15 @@ const Home = () => {
                 if (sensorType === "MCU") {
                     const details = await API.getMCUDeviceDetails(deviceName);
                     const metrics = details.get_metrics || [];
-                    const latestMetric = metrics.sort((a, b) => new Date(b.time_uploaded) - new Date(a.time_uploaded))[0];
+                    const latestMetric = [...metrics].sort((a, b) => new Date(b.time_uploaded) - new Date(a.time_uploaded))[0];
                     const avgDbLevel = latestMetric ? latestMetric.avg_db_level : null;
                     return [location.id, { type: "mcu", data: details, avgDbLevel }];
+                } else if (sensorType === "MOBILE") {
+                    const details = await API.getMCUDeviceDetails(deviceName);
+                    const metrics = details.get_metrics || [];
+                    const latestMetric = [...metrics].sort((a, b) => new Date(b.time_uploaded) - new Date(a.time_uploaded))[0];
+                    const avgDbLevel = latestMetric ? latestMetric.avg_db_level : null;
+                    return [location.id, { type: "mobile", data: details, latestMetric, avgDbLevel }];
                 } else if (sensorType === "AI") {
                     const [inference, environment] = await Promise.all([
                         API.getAISoundInference(deviceName),

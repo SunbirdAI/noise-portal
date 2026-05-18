@@ -2,23 +2,35 @@ import {MyMapContainer} from "./HomePageMap.styles";
 import 'leaflet/dist/leaflet.css';
 import 'react-leaflet-markercluster/dist/styles.min.css';
 import {MapContainer, TileLayer, useMap} from "react-leaflet";
-import {useRef} from "react";
+import {useEffect, useRef} from "react";
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import L from "leaflet";
 import NoiseLevelMarker from "../NoiseLevelMarker";
+import { getLocationCoordinates } from "../../utils";
 
-const SetViewOnCitySelect = ({newCenter, animateRef}) => {
+const SetViewOnLocationsChange = ({ bounds, animateRef }) => {
     const map = useMap();
-    
-    // Validate coordinates before setting view
-    if (newCenter && newCenter[0] !== undefined && newCenter[1] !== undefined) {
-        map.setView(newCenter, 13, {
-            animate: animateRef.current || false
+
+    useEffect(() => {
+        if (!bounds || bounds.length === 0) return;
+
+        map.invalidateSize();
+
+        if (bounds.length === 1) {
+            map.setView(bounds[0], 13, {
+                animate: animateRef.current || false
+            });
+            return;
+        }
+
+        map.fitBounds(bounds, {
+            animate: animateRef.current || false,
+            padding: [40, 40]
         });
-    }
+    }, [animateRef, bounds, map]);
 
     return null;
-}
+};
 
 // Enhanced custom cluster icon function
 const createClusterIcon = (cluster) => {
@@ -185,19 +197,18 @@ const clusterStyles = `
 const HomePageMap = ({ locations, deviceDetailsMap }) => {
     const animateRef = useRef(false);
     animateRef.current = !animateRef.current;
-    
-    // Filter out locations with invalid coordinates
-    const validLocations = locations.filter(location => 
-        location.latitude !== undefined && 
-        location.longitude !== undefined &&
-        !isNaN(location.latitude) &&
-        !isNaN(location.longitude)
-    );
-    
-    // Calculate center point - use first valid location or default to Kampala
-    const centerPoint = validLocations.length > 0 
-        ? [validLocations[0].latitude, validLocations[0].longitude]
-        : [0.347596, 32.582520]; // Default to Kampala coordinates
+
+    const resolvedLocations = locations
+        .map((location) => ({
+            location,
+            coordinates: getLocationCoordinates(location, deviceDetailsMap[location.id])
+        }))
+        .filter(({ coordinates }) => coordinates !== null);
+
+    const mapBounds = resolvedLocations.map(({ coordinates }) => [
+        coordinates.latitude,
+        coordinates.longitude
+    ]);
     
     return (
         <>
@@ -265,7 +276,7 @@ const HomePageMap = ({ locations, deviceDetailsMap }) => {
                             console.log('Cluster unspiderfied');
                         }}
                     >
-                        {validLocations.map((location, index) => (
+                        {resolvedLocations.map(({ location }, index) => (
                             <NoiseLevelMarker 
                                 key={location.id || index} 
                                 location={location}
@@ -274,8 +285,8 @@ const HomePageMap = ({ locations, deviceDetailsMap }) => {
                         ))}
                     </MarkerClusterGroup>
                     
-                    <SetViewOnCitySelect
-                        newCenter={centerPoint}
+                    <SetViewOnLocationsChange
+                        bounds={mapBounds}
                         animateRef={animateRef}
                     />
                 </MapContainer>
