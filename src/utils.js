@@ -88,3 +88,43 @@ export const basicNoiseThresholds = {
     "low": 55,
     "high": 70
 };
+
+const toFiniteNumber = (value) => {
+    if (value === null || value === undefined || value === '') return null;
+
+    const parsedValue = Number(value);
+    return Number.isFinite(parsedValue) ? parsedValue : null;
+};
+
+const hasUsableCoordinates = (latitude, longitude) => {
+    if (latitude === null || longitude === null) return false;
+    if (latitude < -90 || latitude > 90) return false;
+    if (longitude < -180 || longitude > 180) return false;
+
+    // Ignore placeholder GPS values that put the sensor in the Gulf of Guinea.
+    if (latitude === 0 && longitude === 0) return false;
+
+    return true;
+};
+
+export const getLocationCoordinates = (location, deviceDetails = null) => {
+    const mobileMetrics = deviceDetails?.type === 'mobile' ? deviceDetails.data?.get_metrics ?? [] : [];
+    const latestValidMobileMetric = mobileMetrics.find((metric) => (
+        hasUsableCoordinates(
+            toFiniteNumber(metric?.last_rec),
+            toFiniteNumber(metric?.last_upl)
+        )
+    ));
+
+    const mobileLatitude = toFiniteNumber(latestValidMobileMetric?.last_rec);
+    const mobileLongitude = toFiniteNumber(latestValidMobileMetric?.last_upl);
+    const staticLatitude = toFiniteNumber(location?.latitude ?? location?.lat);
+    const staticLongitude = toFiniteNumber(location?.longitude ?? location?.lng);
+
+    const latitude = hasUsableCoordinates(mobileLatitude, mobileLongitude) ? mobileLatitude : staticLatitude;
+    const longitude = hasUsableCoordinates(mobileLatitude, mobileLongitude) ? mobileLongitude : staticLongitude;
+
+    if (!hasUsableCoordinates(latitude, longitude)) return null;
+
+    return { latitude, longitude };
+};

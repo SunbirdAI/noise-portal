@@ -120,8 +120,8 @@ const Location = () => {
     // Fetch sensor-specific data on mount
     useEffect(() => {
         let isMounted = true;
-        const deviceId = location.device_id || location.id;
-        if (sensorType === 'MCU' && deviceId) {
+        const deviceId = location.device_id || location.device_name || location.name || location.id;
+        if ((sensorType === 'MCU' || sensorType === 'MOBILE') && deviceId) {
             getMCUDeviceDetails(deviceId)
                 .then(data => { if (isMounted) setMCUData(data); })
                 .catch(e => { if (isMounted) setError(e.message); });

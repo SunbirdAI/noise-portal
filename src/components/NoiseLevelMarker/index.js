@@ -3,7 +3,7 @@ import {
     NoiseLevelMarkerContainer,
     LocationText
 } from "./NoiseLevelMarker.styles";
-import { basicNoiseThresholds } from "../../utils";
+import { basicNoiseThresholds, getLocationCoordinates } from "../../utils";
 import { MdVolumeUp, MdVolumeDown, MdVolumeMute } from "react-icons/md";
 import { divIcon } from "leaflet/dist/leaflet-src.esm";
 import { Marker, Popup } from "react-leaflet";
@@ -33,6 +33,11 @@ const getCustomIcon = (location, deviceDetails = null) => {
     if (deviceDetails?.type === 'mcu' && deviceDetails.avgDbLevel !== null) {
         dbValue = deviceDetails.avgDbLevel;
     }
+
+    // For MOBILE devices, use the latest average dB level from the live metric
+    if (deviceDetails?.type === 'mobile' && deviceDetails.avgDbLevel !== null) {
+        dbValue = deviceDetails.avgDbLevel;
+    }
     
     // For AI devices, use Sound Pressure (db_level from environment)
     if (deviceDetails?.type === 'ai' && deviceDetails.environment?.db_level !== null) {
@@ -52,10 +57,10 @@ const getCustomIcon = (location, deviceDetails = null) => {
 
 const NoiseLevelMarker = ({ location, deviceDetails }) => {
     const [showPopup, setShowPopup] = useState(false);
+    const markerCoordinates = getLocationCoordinates(location, deviceDetails);
 
     // Validate coordinates before rendering marker
-    if (!location.latitude || !location.longitude || 
-        isNaN(location.latitude) || isNaN(location.longitude)) {
+    if (!markerCoordinates) {
         console.warn('Invalid coordinates for location:', location);
         return null;
     }
@@ -68,6 +73,9 @@ const NoiseLevelMarker = ({ location, deviceDetails }) => {
         if (deviceDetails?.type === 'mcu') {
             return `mcu-${location.id}-${deviceDetails.avgDbLevel}`;
         }
+        if (deviceDetails?.type === 'mobile') {
+            return `mobile-${location.id}-${deviceDetails.latestMetric?.time_uploaded}-${markerCoordinates.latitude}-${markerCoordinates.longitude}`;
+        }
         if (deviceDetails?.type === 'ai') {
             return `ai-${location.id}-${deviceDetails.environment?.db_level}`;
         }
@@ -77,7 +85,7 @@ const NoiseLevelMarker = ({ location, deviceDetails }) => {
     return (
         <Marker
             key={getMarkerKey()}
-            position={[location.latitude, location.longitude]}
+            position={[markerCoordinates.latitude, markerCoordinates.longitude]}
             icon={getCustomIcon(location, deviceDetails)}
             eventHandlers={{
                 mouseover: handleMouseOver
@@ -93,6 +101,9 @@ const NoiseLevelMarker = ({ location, deviceDetails }) => {
                         {deviceDetails && (
                             <>
                                 {deviceDetails.type === 'mcu' && (
+                                    <MCUPopupContent data={deviceDetails.data} location={location} />
+                                )}
+                                {deviceDetails.type === 'mobile' && (
                                     <MCUPopupContent data={deviceDetails.data} location={location} />
                                 )}
                                 {deviceDetails.type === 'ai' && (

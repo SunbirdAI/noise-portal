@@ -158,8 +158,14 @@ const fetchAnalysis = async () => {
 // Utility function to detect sensor type based on device name
 export function detectSensorType(deviceName) {
     if (typeof deviceName !== 'string') return 'unknown';
-    if (deviceName.startsWith('SB')) return 'MCU';
-    if (deviceName.startsWith('SEAS')) return 'AI';
+
+    const trimmedDeviceName = deviceName.trim();
+    const upperDeviceName = trimmedDeviceName.toUpperCase();
+    const lowerDeviceName = trimmedDeviceName.toLowerCase();
+
+    if (lowerDeviceName.startsWith('mobile')) return 'MOBILE';
+    if (upperDeviceName.startsWith('SB')) return 'MCU';
+    if (upperDeviceName.startsWith('SEAS')) return 'AI';
     return 'unknown';
 }
 
